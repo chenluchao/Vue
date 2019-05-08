@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>{{ msg }}</p>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+		<script src="js/axios/axios.min.js"></script>
+		<script>
+			var tokenUrl = "http://127.0.0.1/teach/tokentest/deal.php";
+			//data
+			var data = {
+				msg: "hello world"
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				created() {
+					//请求拦截器
+					axios.interceptors.request.use(
+						function(config) {
+							console.log("request")
+							console.log(config)
+							config.headers["token"] = "3rqwerewqrwqrwqerqwerwqer";
+							return config;
+						},
+						function(error) {
+							return Promise.reject(error);
+						});
+					//响应拦截器
+					axios.interceptors.response.use(
+						function(response) {
+
+							console.log("response==");
+							console.log(response.data);
+
+							var data = response.data;
+							console.log("code = " + data.code);
+							if (data.code == -100) {
+								alert("版本升级 " + data.msg);
+							}
+
+							return response;
+						},
+						function(error) {
+							console.log("error")
+							return Promise.reject(error);
+						})
+
+					this.getRequire()
+				},
+				methods: {
+					getRequire() {
+						var url = tokenUrl + "?username=admin&password=123";
+						axios.get(url).then(res => {
+							console.log("getRequire")
+							console.log(res.data)
+						}).catch(error => {
+							
+						})
+					},
+				}
+			});
+		</script>
+	</body>
+</html>

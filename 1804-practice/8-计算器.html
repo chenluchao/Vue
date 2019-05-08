@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>Vue demo</title>
+	<style>
+		body {
+			margin: 0;
+		}
+
+		.info {
+			width: 100%;
+			height: 120px;
+			background-color: black;
+			color: white;
+			text-align: right;
+			padding-right: 10px;
+			padding-top: 70px;
+			box-sizing: border-box;
+			font-size: 36px;
+		}
+
+		.btn {
+			width: 25%;
+			height: 54px;
+			font-size: 20px;
+		}
+
+		.operator {
+			color: white;
+			background-color: orange;
+		}
+
+		.zero {
+			width: 50%;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- 显示视图 -->
+	<div id="app">
+
+		<div>
+
+			<!-- 信息显示区域 -->
+			<div class="info">{{info}}</div>
+
+			<!-- 控制区域 -->
+			<div class="control">
+				<button :class="item.className" v-for="(item,index) in list" @click="dealClick(item.title)">{{item.title}}</button>
+			</div>
+		</div>
+
+	</div>
+
+	<script src="js/vue/vue.js"></script>
+
+	<script>
+		//data
+		var data = {
+			msg: "hello world",
+
+			//显示数据
+			info: "0",
+
+			//存储按钮信息的数组
+			list: [
+				{ title: "AC", className: "btn" }, { title: "+/-", className: "btn" }, { title: "%", className: "btn" }, { title: "/", className: "btn operator" },
+				{ title: "7", className: "btn" }, { title: "8", className: "btn" }, { title: "9", className: "btn" }, { title: "*", className: "btn operator" },
+				{ title: "4", className: "btn" }, { title: "5", className: "btn" }, { title: "6", className: "btn" }, { title: "-", className: "btn operator" },
+				{ title: "1", className: "btn" }, { title: "2", className: "btn" }, { title: "3", className: "btn" }, { title: "+", className: "btn operator" },
+				{ title: "0", className: "btn zero" }, { title: ".", className: "btn" }, { title: "=", className: "btn operator" }
+			]
+		};
+
+		//vue实例
+		var app = new Vue({
+			el: "#app",
+			data: data,
+			methods: {
+				dealClick(title) {
+
+					console.log(title)
+
+					//try里面放代码 ,没有问题, 就当try不窜仔
+					//如果try代码出错, 会执行catch中代码
+					try {
+
+						//逻辑
+						var info = this.info
+
+						//如果是数字
+						if (title >= 0 && title <= 9) {
+							if (info == "0") {
+								info = ""
+							}
+							info += title
+						}
+
+						//如果是+-*/
+						//
+						if (title == "+"
+							|| title == "-"
+							|| title == "*"
+							|| title == "/") {
+
+							//如果最后一个字符是数字, 就添加加
+							var lastChar = info.charAt(info.length - 1)
+							if (lastChar >= 0 && lastChar <= 9) {
+								info += title
+							}
+
+						}
+
+						if (title == ".") {
+
+							//最后一个字符遍历
+							var isFindPoint = true
+							for(var i=info.length; i--; i>=0){
+
+								//如果碰到+-*/, 直接退出
+								var  c = info.charAt(i)
+
+								if(c>=0 && c<=9){
+									isFindPoint = false;
+								}
+
+								if(c == "."){
+									isFindPoint = true
+									break;
+								}
+
+								
+								if (c == "+"
+									|| c == "-"
+									|| c == "*"
+									|| c == "/") {
+										break;
+								}
+
+							}
+
+							if(isFindPoint == false){
+								//最后一个数字字符串中, 没有点, 就能输点
+								info += title
+							}
+
+							
+						}
+
+						if (title == "=") {
+							//eval是js提供的一个函数
+							// 任意浏览器能用,  微信小程序不能用
+							//console.log(window.eval)
+							var r = eval(info).toString();
+							info = r
+						}
+
+						if (title == "AC") {
+							info = "0"
+						}
+
+						if (title == "%") {
+							//eval是js提供的一个函数
+							// 任意浏览器能用,  微信小程序不能用
+							//console.log(window.eval)
+							var r = (eval(info) / 100).toString();
+							info = r
+						}
+
+						if (title == "+/-") {
+							//eval是js提供的一个函数
+							// 任意浏览器能用,  微信小程序不能用
+							//console.log(window.eval)
+							var r = (-eval(info)).toString();
+							info = r
+						}
+
+
+
+						this.info = info
+
+					} catch (error) {
+
+						this.info = "ERROR"
+						console.log(error)
+					}
+
+
+
+				}
+			}
+		});
+	</script>
+</body>
+
+</html>

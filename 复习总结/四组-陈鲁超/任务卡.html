@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			.box{
+				border: 1px solid #ddd;
+				padding: 0 30px;
+				width: 300px;
+			}
+			.nav{
+				font-weight: bold;
+				font-size: 20px;
+			}
+			.addTarget>p{
+				font-size: 16px;
+			}
+			.item input[type="text"]{
+				border: none;
+				outline: none;
+			}
+			.item button{
+				border: none;
+				background-color: #fff;
+				font-size: 12px;
+				outline: none;
+			}
+			.showNum span{
+				font-size: 16px;
+				color: #03ccbb;
+				margin: 0 5px;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<div class="box">
+				<p class="nav">小目标列表</p>
+				<div class="addTarget">
+					<p>添加小目标</p>
+					<input type="text" v-model="content" placeholder="请输入内容">
+					<button @click="dealAdd">添加</button>
+				</div>
+				<p class="showNum">共有<span>{{sum}}</span>个目标，已完成<span>{{finish}}</span>，还有<span>{{unfinish}}</span>项待完成</p>
+				<label for="all"><input id="all" type="radio" name="target" :checked="allTarget" @click="dealAll"/> 所有目标</label>
+				<label for="finish"><input id="finish" type="radio" name="target" :checked="doTarget" @click="dealisDo"/> 已完成目标</label>
+				<label for="unfinish"><input id="unfinish" type="radio" name="target" :checked="noTarget" @click="dealNoDo"/> 未完成目标</label>
+				<div class="item" v-for="(item,index) in list" v-if="allTarget">
+					<input type="checkbox" v-model="item.isDo">
+					<input type="text" v-model="item.content">
+					<button @click="dealDelect(index)">删除任务</button>
+				</div>
+				<div class="item" v-for="(item,index) in list" v-if="doTarget">
+					<input v-if="item.isDo" type="checkbox" v-model="item.isDo">
+					<input v-if="item.isDo" type="text" v-model="item.content">
+					<button v-if="item.isDo" @click="dealDelect(index)">删除任务</button>
+				</div>
+				<div class="item" v-for="(item,index) in list" v-if="noTarget">
+					<input v-if="item.isDo==false" type="checkbox" v-model="item.isDo">
+					<input v-if="item.isDo==false" type="text" v-model="item.content">
+					<button v-if="item.isDo==false" @click="dealDelect(index)">删除任务</button>
+				</div>
+			</div>
+		</div>
+		<script src="js/vue/vue.js"></script>
+		<script>
+			//data
+			var data = {
+				content:"",
+				allTarget:true,
+				doTarget:false,
+				noTarget:false,
+				list:[{
+					content:"HTML",
+					isDo:true
+				},{
+					content:"CSS",
+					isDo:true
+				},{
+					content:"JavaScript",
+					isDo:true
+				},{
+					content:"Vue",
+					isDo:false
+				},{
+					content:"React",
+					isDo:false
+				}]
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				computed:{
+					sum(){
+						return this.list.length
+					},
+					finish(){
+						var f = 0
+						for(var item of this.list){
+							if(item.isDo){
+								f += 1
+							}
+						}
+						return f
+					},
+					unfinish(){
+						var uf = 0
+						for(var item of this.list){
+							if(!item.isDo){
+								uf += 1
+							}
+						}
+						return uf
+					}
+				},
+				methods:{
+					dealDelect(index){
+						this.list.splice(index,1)
+					},
+					dealAdd(){
+						if(this.content==""){
+							alert("请输入任务内容")
+							return
+						}
+						var dict = {
+							content:this.content,
+							isDo:false
+						}
+						this.list.push(dict)
+						this.content = ""
+					},
+					dealAll(){
+						this.allTarget=true
+						this.doTarget=false
+						this.noTarget=false
+					},
+					dealisDo(){
+						this.allTarget=false
+						this.doTarget=true
+						this.noTarget=false
+					},
+					dealNoDo(){
+						this.allTarget=false
+						this.doTarget=false
+						this.noTarget=true
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

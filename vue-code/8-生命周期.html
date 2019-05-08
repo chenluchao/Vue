@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>{{ msg }}</p>
+			<button @click="msg = 'hehe'">Click</button>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world"
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				//create之前执行
+				beforeCreate() {
+					console.log("beforeCreate");
+				},
+				//create之后执行
+				//create把data属性中传入的数据, 经过处理, 放到$data之上
+				//create之前数据是不存在的, 不要使用  this.msg = "112"
+				created() {
+					console.log("created");
+
+					//console.log("app.$data = ");
+					console.log(this.$data);
+
+					//OK
+					this.msg = "112";
+
+					//OK
+					this.$data.msg = "222";
+				},
+
+				//mount加载之前执行
+				//this.$el 直接就是view模板代码
+				beforeMount() {
+					console.log("beforeMount");
+				},
+				//mount之后执行
+				//mount解析处理view阶段, id="app"对应的view解析成dom,显示这个dom
+				mounted() {
+					console.log("mounted");
+					console.log("$el=");
+					console.log(this.$el);
+
+					//console.log(this.$el.toString());
+
+					//this.$el就是显示的dom
+					//this.$el.innerHTML += "hhhhhhhhhhh";
+				},
+				//update更新之前执行
+				beforeUpdate() {
+					console.log("beforeUpdate");
+				},
+				updated() {
+					console.log("updated");
+				}
+
+				//destroy函数可以写, 不会执行
+			});
+
+			//$data是vue实例获取了传入的data之后, 实例上自主添加属性
+			//console.log("app.$data = ");
+			//console.log(app.$data);
+		</script>
+	</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			.box{
+				width: 100%;
+			}
+			.head{
+				color: lime;
+			}
+			.nav{
+				padding: 0 10px;
+				box-sizing: border-box;
+				height: 40px;
+				background-color: #ddd;
+				line-height: 40px;
+				display: flex;
+				justify-content: space-between;
+			}
+			.goods-box{
+				height: 50px;
+				line-height: 50px;
+				display: flex;
+				justify-content: space-between;
+			}
+			.title{
+				flex-basis: 110px;
+				text-align: center;
+			}
+			.sub-add{
+				display: flex;
+				flex-basis: 40px;
+			}
+			.select{
+				flex-basis: 40px;
+				text-align: center;
+			}
+			.foot{
+				display: flex;
+				justify-content: space-between;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="clc">
+			<div class="box">
+				<p class="head">购物清单</p>
+				<div class="nav">
+					<div>
+						<input type="checkbox" v-model="isSelect" @change="dealAllSelect"/>全选
+					</div>
+					<div>商品</div>
+					<div>数量</div>
+					<div>单价</div>
+					<div>金额(元)</div>
+					<div><button>操作</button></div>
+				</div>
+				<div class="goods-box" v-for="(item,index) in list" :key="index">
+					<div class="select">
+						<input type="checkbox" v-model="item.isSelect" @change="dealGoods(index)">
+					</div>
+					<div class="title">
+						{{item.title}}
+					</div>
+					<div class="sub-add">
+						<div>
+							<button @click="dealSub(index)">-</button>
+						</div>
+						<div>{{item.sum}}</div>
+						<div>
+							<button @click="dealAdd(index)">+</button>
+						</div>
+					</div>
+					<div class="price">
+						￥{{item.price}}
+					</div>
+					<div class="allprice">
+						￥{{item.oneGoodsPrice}}
+					</div>
+					<div class="delet">
+						<button @click="dealDelect(index)">删除</button>
+					</div>
+				</div>
+				<div class="foot">
+					<button @click="dealDelectSelect">删除已选</button>
+					<div>总价：￥{{allPrice}}</div>
+				</div>
+			</div>
+		</div>
+		<script src="js/vue/vue.js"></script>
+		<script>
+			//data
+			var data = {
+				isSelect: false,
+				list: [{
+					id: 1001,
+					title: "小米9",
+					price: "2999",
+					sum: 2,
+					isSelect: false,
+					oneGoodsPrice: 0
+				}, {
+					id: 1002,
+					title: "小米曲面屏液晶电视",
+					price: "5999",
+					sum: 1,
+					isSelect: false,
+					oneGoodsPrice: 0
+				}, {
+					id: 1003,
+					title: "华为mate20Pro",
+					price: "10299",
+					sum: 2,
+					isSelect: false,
+					oneGoodsPrice: 0
+				}, {
+					id: 1004,
+					title: "袜子",
+					price: "19.9",
+					sum: 2,
+					isSelect: false,
+					oneGoodsPrice: 0
+				}, {
+					id: 1005,
+					title: "时尚短裤",
+					price: "67",
+					sum: 1,
+					isSelect: false,
+					oneGoodsPrice: 0
+				}]
+			};
+
+			//vue实例
+			var clc = new Vue({
+				el: "#clc",
+				data: data,
+				created() {
+					for (var goods of this.list) {
+						goods.oneGoodsPrice = (goods.sum * goods.price).toFixed(2)
+					}
+				},
+				computed: {
+					allPrice() {
+						var price = 0;
+						for (var shop of this.list) {
+							if (shop.isSelect) {
+								price += shop.price * shop.sum
+							}
+						}
+						return price
+					}
+				},
+				methods: {
+					//删除所选商品
+					dealDelectSelect(){
+						var arr = []
+						var list = this.list
+						for(var i=0;i<list.length;i++){
+							if(list[i].isSelect==false){
+								arr.push(list[i])
+							}
+						}
+						this.list = arr
+						//console.log(arr)
+					},
+					dealAllSelect(){
+						var isSelect = this.isSelect
+						for(var goods of this.list){
+							goods.isSelect = isSelect
+						}
+					},
+					dealGoods(index) {
+						var isSelectShop = true
+						for (var goods of this.list) {
+							if (goods.isSelect == false) {
+								isSelectShop = false
+							}
+						}
+						this.isSelect = isSelectShop
+					},
+					dealSub(index) {
+						var goods = this.list[index]
+						var sum = goods.sum
+						if (sum <= 1) {
+							return;
+						}
+						sum -= 1
+						this.list[index].sum = sum
+						this.list[index].oneGoodsPrice = (this.list[index].sum * this.list[index].price).toFixed(2)
+					},
+					dealAdd(index) {
+						var goods = this.list[index]
+						goods.sum += 1
+						goods.oneGoodsPrice = (goods.sum * goods.price).toFixed(2)
+					},
+					dealDelect(index) {
+						this.list.splice(index, 1)
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

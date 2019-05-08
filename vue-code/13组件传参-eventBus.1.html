@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			#app {
+				width: 300px;
+				min-height: 300px;
+				background-color: lightgray;
+			}
+			.goods-count {
+				width: 100px;
+				min-height: 100px;
+				background-color: lightcoral;
+			}
+			.show{
+				width: 100px;
+				height: 100px;
+				background-color: green;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<com></com>
+			<show></show>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			
+			var eventBus = new Vue()//创建新实例
+			
+			Vue.component("com",{
+				template:`<div class="goods-count">
+				{{count}}
+				<button @click="dealAdd">+</button>
+				</div>`,
+				data(){
+					return{count:0}
+				},
+				methods:{
+					dealAdd(){
+						this.count++
+						eventBus.$emit("mychange",this.count)
+					}
+				}
+			})
+			
+			Vue.component("show",{
+				template:`<div class="show">
+				{{count * price}}
+				</div>`,
+				data(){
+					return{
+						price:10,
+						count:0
+					}
+				},
+				created(){
+					eventBus.$on("mychange",c=>{
+						this.count = c
+					})
+				}
+			})
+			
+			//data
+			var data = {
+				
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data
+			});
+		</script>
+	</body>
+</html>

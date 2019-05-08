@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>{{ msg }}</p>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<!-- Step1： 先加入js -->
+		<script src="js/vue/vue-resource.js"></script>
+
+		<script>
+			//Step2: 定义url
+			//http://192.168.1.118/teach/gettest/deal.php?username=admin&password=123
+			var getUrl = "http://127.0.0.1/teach/gettest/deal.php";
+			var postUrl = "http://127.0.0.1/teach/posttest/deal.php";
+
+			//data
+			var data = {
+				msg: "hello world"
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				created() {
+					//发起一次网络请求
+					//GET/POST
+					//this.getRequest();
+
+					this.postRequest();
+
+					//post上传文件  [重要]
+				},
+				methods: {
+					postRequest() {
+						//注意: 在vue-resource中, 发起普通post请求, 一般要设置emulateJSON = true;
+						//不然发出请求的Content-Type: application/json;charset=UTF-8
+						//	发出的数据就是json格式, 服务器识别不了json, 得不到数据
+						Vue.http.options.emulateJSON = true;
+
+						//参数
+						var dict = {
+							username: "admin",
+							password: "123"
+						};
+						this.$http
+							.post(postUrl, dict)
+							.then(res => {
+								//
+								//返回值
+								//状态码 200
+								console.log(res.status);
+								//返回的数据
+								console.log(res.data);
+							})
+							.catch(error => {
+								//
+								console.log(error);
+							});
+					},
+					getRequest() {
+						console.log("getRequest");
+
+						//一旦导入了vue-resource.js, 就会在实例上添加$http对象
+						//this.$http
+						var url = getUrl + "?username=admin&password=123";
+						// this.$http.get(url, {}, res => {
+						// 	console.log(res);
+						// });
+
+						//es6 promise    promise返回通过then和catch
+						this.$http
+							.get(url)
+							.then(res => {
+								//console.log(res);
+
+								//返回值
+								//状态码 200
+								console.log(res.status);
+								//返回的数据
+								console.log(res.data);
+							})
+							.catch(error => {
+								console.log(error);
+							});
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>{{ msg }}</p>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+		<!-- Step1: 导入脚本 -->
+		<script src="js/axios/axios.min.js"></script>
+
+		<script>
+			var getUrl = "http://127.0.0.1/teach/gettest/deal.php";
+			var postUrl = "http://127.0.0.1/teach/posttest/deal.php";
+
+			//data
+			var data = {
+				msg: "hello world"
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				created() {
+					//Get请求
+					//this.getRequest();
+
+					//post请求
+					this.postRequest();
+				},
+				methods: {
+					postRequest() {
+						console.log("postRequest");
+						var url = postUrl;
+
+						var dict = {
+							username: "admin",
+							password: "123"
+						};
+
+						///post函数
+						// axios.post(url网址, post参数, option设置).then(成功回到).catch(失败回调)
+						//注意: 第二个参数一般不传入对象, 因为如果是对象, 请求的类型会是 application/json;charset=UTF-8
+						//	有可能服务器无法处理这个请求
+						axios
+							.post(url, "username=admin&password=123")
+							.then(res => {
+								console.log(res.data);
+							})
+							.catch(error => {
+								console.log(error);
+							});
+					},
+					getRequest() {
+						//
+						//能否访问形式
+						//
+						console.log(axios);
+						//Vue.prototype.$http = axios;
+						//console.log(this.$http);
+
+						/*
+						var url = getUrl + "?username=admin&password=123";
+						axios
+							.get(url)
+							.then(res => {
+								console.log(res.data);
+							})
+							.catch(error => {
+								console.log(error);
+							});
+						*/
+
+						var url = getUrl;
+						var dict = {
+							username: "admin",
+							password: "123"
+						};
+						axios
+							.get(url, {
+								params: dict
+							})
+							.then(res => {
+								console.log(res.data);
+							})
+							.catch(error => {
+								console.log(error);
+							});
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

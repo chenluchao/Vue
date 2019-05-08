@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			.box{
+				width: 200px;
+				height: 200px;
+				border: 1px solid red;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<hello></hello>
+			<count></count>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			
+			var Hello = Vue.component("hello",{
+				template:`<div class="box">
+					<div>hello</div>
+					<div>world</div>
+				</div> `
+			});
+			
+			Vue.component("count",{
+				template:`<div>
+					<div>
+						<button @click="dealSub">-</button>{{c}}<button @click="dealAdd">+</button>
+					</div>
+				</div>`,
+				data(){
+					return {
+						c:1
+					}
+				},
+				methods:{
+					dealSub(){
+						if(this.c==1){
+							return
+						}
+						this.c--
+					},
+					dealAdd(){
+						this.c++
+					}
+				}
+			})
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: {
+					
+				}
+			});
+			
+			
+		</script>
+	</body>
+</html>

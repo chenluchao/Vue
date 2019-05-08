@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			body{
+				margin: 0%;
+		
+			}
+			.section .title{
+				height: 40px;
+				line-height: 40px;
+				border-top: 1px solid #aaa;
+				border-bottom: 1px solid #aaa;
+				padding-left: 10px;
+				padding-right: 10px;
+				background-color: lightgrey;
+		
+				display: flex;
+				justify-content: space-between;
+		
+			}
+			/* 每段内容 - 默认样式 - 就是不显示 */
+			.section .content{
+				line-height: 30px;
+				font-size: 14px;
+				color: #888;
+				padding: 0px;
+				height: 0;
+				overflow: hidden;
+			}
+			/* 点击之后, 要显示, 样式 */
+			.show{
+				padding: 10px !important;
+				height: auto !important;
+				overflow: visible !important;
+			}
+			</style>
+		</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<div class="section" v-for="(item,index) in list" :key="index">
+				<div class="title">
+					{{item.title}} <button @click="dealClick(index)">显示/隐藏</button>
+				</div>
+				<div :class="{show:item.isShow==true}" class="content">
+					{{item.content}}
+				</div>
+			</div>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				list:[
+					{
+						title:"第1段",
+						content:"少室山论剑,少室山论剑少室山论剑少室山论剑少室山论剑少室山论剑少室山论剑少室山论剑",
+						//是否显示
+						isShow:false
+					},{
+						title:"第2段",
+						content:"大隐于市,大隐于市大隐于市大隐于市大隐于市大隐于市大隐于市大隐于市大隐于市大隐于市大隐于市",
+						isShow:false
+					},{
+						title:"第3段",
+						content:"奥数神作,奥数神作奥数神作奥数神作,奥数神作,奥数神作奥数神作奥数神作,,,奥数神作奥数神作",
+						isShow:false
+					}
+				]
+			};
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				methods:{
+					dealClick(index){
+						//console.log(index)
+						this.list[index].isShow = !this.list[index].isShow
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

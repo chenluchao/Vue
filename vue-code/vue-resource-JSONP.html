@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<input type="text" v-model="word">
+			<button @click="getRequest">搜索</button>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+		<script src="js/vue/vue-resource.js"></script>
+
+		<script>
+			
+			var url = "https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su";
+			//data
+			var data = {
+				word: ""
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				methods:{
+					getRequest(){
+						console.log("搜索开始...")
+						this.$http.jsonp(url,{params:{wd:this.word},jsonp:'cb'}).then(function(res){
+							console.log(res)
+						}).catch(function(error){
+							console.log(error)
+						})
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

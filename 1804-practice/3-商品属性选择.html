@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			.select{
+				background-color: lightgreen;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>{{ msg }}</p>
+
+			<div>
+				<div>2019年新上市男女各色时尚长短袜子</div>
+				<div>价格: 10元</div>
+				<div>数量
+					<button>-</button>
+					<input type="text" value="1">
+					<button>+</button>
+				</div>
+				<div>
+					选择
+					<div>
+						颜色: <button :class="{select:colorIndex==1}" @click="colorIndex=1">红色</button>
+						<button :class="{select:colorIndex==2}" @click="colorIndex=2">黄色</button>
+						<button :class="{select:colorIndex==3}" @click="colorIndex=3">绿色</button>
+					</div>
+					<div>
+						大小: <button :class="{select:sizeIndex==1}"  @click="sizeIndex=1">S</button>
+						<button :class="{select:sizeIndex==2}" @click="sizeIndex=2">M</button>
+						<button :class="{select:sizeIndex==3}" @click="sizeIndex=3">L</button>
+					</div>
+				</div>
+				<div>
+					<button @click="dealBuy">购买</button>
+				</div>
+
+			</div>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world",
+				colorIndex:-1,
+				sizeIndex:-1
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				methods:{
+					dealBuy(){
+						if(this.colorIndex == -1){
+							alert("请选择颜色")
+							return
+						}
+						if(this.sizeIndex == -1){
+							alert("请选择大小")
+							return
+						}
+						alert("开始购买")
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

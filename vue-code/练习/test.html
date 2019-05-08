@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<div id="app">
+			<input type="text" v-model="msg" >
+			{{msg}}
+			<button @click="dealChange">点击</button>
+			<input type="text" v-model="num1" >
+			<input type="text" v-model="num2" >
+			<p>{{sum}}</p>
+			<hello></hello>
+			<can :title="sum"></can>
+		</div>
+		
+		<script src="../js/vue/vue.js"></script>
+		<script src="../js/vue/vue-resource.js"></script>
+		<script>
+			
+			var hello = Vue.component("hello",{
+				template:`<div>hello</div>`
+			})
+			
+			Vue.component("can",{
+				props:["title"],
+				template:`<div>{{title}}</div>`
+			})
+			
+			var data = {
+				msg:"hello",
+				num1:"",
+				num2:""
+			}
+			
+			var app = new Vue({
+				el:"#app",
+				data:data,
+				methods:{
+					dealChange(){
+						this.msg = "word"
+					}
+				},
+				computed:{
+					sum(){
+						return parseInt(this.num1)+parseInt(this.num2)
+					}
+				}
+			})
+			
+		</script>
+	</body>
+</html>

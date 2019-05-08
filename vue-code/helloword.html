@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<style>
+		.s1{
+			color: red;
+			font-size: 30px;
+		}
+		.s2{
+			border: 1px solid green;
+		}
+	</style>
+	<body>
+		<div id="app">
+			<p :class="d">I am Vue</p>
+			<p :class="c">{{ msg }}</p>
+			<p :class="a">{{ msg }}</p>
+			<p :style="a" v-text="msg"></p>
+			<input type="text" v-model="msg">
+			<button @click="dealChange">点击</button>
+			<a v-bind:href="url1">百度</a>
+			<a :href="url2">淘宝</a>
+			<p v-if="isShow">if</p>
+			<p v-else>else</p>
+			<p>
+				<li v-for="(item,index) in arr1" :key="index">
+					{{index}} {{item}}
+				</li>
+			</p>
+			<p>
+				<li v-for="(v,i) in arr2" :key="i">
+					{{i+""+v.name+""+v.age}}
+				</li>
+			</p>
+			<p>
+				<li v-for="item in arr3">
+					{{item}}
+				</li>
+			</p>
+			<p>姓：<input type="text" v-model="lname"></p>
+			<p>名：<input type="text" v-model="fname"></p>
+			<p> {{lname+"  "+fname}} </p>
+			<button @click="dealShow">显示/隐藏</button>
+			<p v-if="isShow1">111</p>
+			<p v-show="isShow1">222</p>
+			
+			
+			<p>{{'aaa'}}</p>
+			<p>{{"bbb"}}</p>
+			<p>{{"aaa"+"bbb"}}</p>
+			<p>{{Math.abs(-200)}}</p>
+			<p>{{200+300-100*2/2}}</p>
+			<p>{{sum(10,20)}}</p>
+			<p>{{arr1}}</p>
+			<p>{{arr2}}</p>
+			<p>{{arr3}}</p>
+			<button @click="go">打印arr2的JSON</button>
+		</div>
+		
+		<script src="js/vue/vue.js"></script>
+		<script>
+			var data = {
+				msg:"Hellow World!",
+				url1:"http://www.baidu.com",
+				url2:"http://www.taobao.com",
+				c:"s1 s2",
+				a:["s1","s2"],
+				d:{"s1":true,"s2":false},
+				isShow:false,
+				isShow1:false,
+				arr1:[10,20,30,40,50],
+				arr2:[
+					{
+						id:1,
+						name:"zhang",
+						age:"10"
+					},{
+						id:2,
+						name:"zhao",
+						age:"20"
+					},{
+						id:2,
+						name:"wang",
+						age:"30"
+					}
+				],
+				arr3:{
+					name:"dog",
+					age:"5",
+					run:"200"
+				},
+				lname:"",
+				fname:""
+			};
+			var app = new Vue({
+				el:"#app",
+				data:data,
+				methods:{
+					dealChange(){
+						this.msg="change"
+						this.c = "s1"
+						this.a.splice(0,1)
+						delete this.d["s1"]
+					},
+					dealShow(){
+						this.isShow1 = !this.isShow1
+					},
+					sum(a,b){
+						return a+b
+					},
+					go(){
+						console.log(this.arr2)
+					}
+				}
+			})
+			
+			app.msg = "外部数据绑定操作"
+			//相同效果
+// 			var app = new Vue({
+// 				el:"#app",
+// 				data:{
+// 					msg:'Good'
+// 				}
+// 			})
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>{{ pi }}</p>
+			<input type="text" v-model="r">
+			<button @click="dealchange">计算</button>
+			<p>{{area}}</p>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			
+			var math = {
+				install(Vue,options){
+					if(options){
+						console.log("options")
+						console.log(options)
+					}
+					Vue.pi = 3.14
+					Vue.prototype.pi = 3.14
+					
+					Vue.area = r=>{
+						return 2*Vue.pi * r;
+					}
+				}
+			};
+			Vue.use(math,{v:10})
+			
+			//data
+			var data = {
+				msg: "hello world",
+				r:0,
+				area:0
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				methods:{
+					dealchange(){
+						this.area = Vue.area(this.r)
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

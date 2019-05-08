@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			.control{
+				display: flex;
+				margin-bottom: 5px;
+				margin-top: 5px;
+			}
+			.control button{
+				width: 33.3333%;
+			}
+			.select{
+				background-color: lightcyan;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			
+			<div>	
+				<div>2019年荷兰进口高营养天然无污染荷兰豆</div>
+				<div>单价: 20元</div>
+				<div>数量: <input type="text" value="3"></div>
+				<div class="control">
+					<button :class="{select:showIndex == 1}" @click="showIndex=1">详情</button>
+					<button :class="{select:showIndex == 2}" @click="showIndex=2">参数</button>
+					<button :class="{select:showIndex == 3}" @click="showIndex=3">评论</button>
+				</div>
+				<div>
+					<div v-show="showIndex == 1">
+							2019年荷兰进口高营养天然无污染荷兰豆2019年荷兰进口高营养天然无污染荷兰豆2019年荷兰进口高营养天然无污染荷兰豆2019年荷兰进口高营养天然无污染荷兰豆2019年荷兰进口高营养天然无污染荷兰豆
+					</div>
+					<div v-show="showIndex == 2">
+						<p>大小: 2cm/2cm/2cm</p>
+						<p>颜色: 绿色</p>
+						<p>年份: 2018</p>
+
+					</div>
+					<div v-show="showIndex == 3">
+						<div>三儿: 吃了很不错, 腿也不酸了, 腰也不疼了,.......</div>
+						<div>美美: 给老公吃了, 老公现在特别心平气和, 与世无争</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world",
+
+				showIndex:1
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			.page {
+				width: 200px;
+				height: 400px;
+				border: 1px solid black;
+			}
+
+			.tabbar {
+				width: 200px;
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 
+			vue-router首页 : https://router.vuejs.org/zh/
+            基础案例: https://router.vuejs.org/zh/guide/#html
+		 -->
+
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>路由演示</p>
+
+			<!-- <5>view中添加一个router-view, 去显示当前的界面 -->
+			<router-view></router-view>
+
+			<div class="tabbar">
+				<router-link to="/">图书</router-link>
+				<router-link to="/music">音乐</router-link>
+				<router-link to="/film">电影</router-link>
+			</div>
+
+
+			<!-- <div class="tabbar">
+				<a href="#/">图书</a>
+				<a href="#/music">音乐</a>
+				<a href="#/film">电影</a>
+			</div> -->
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+		<script src="js/vue/vue-router.js"></script>
+
+		<script>
+			//路由使用步骤
+			/*
+				基本使用
+				<1>加载vue-router.js库文件
+				<2>创建多个页面, 其实创建多个组件(一个界面一个组件)
+				<3>定义一个路由规则(指定一个路径对应一个界面)
+				<4>实例中加载使用路由规则
+				<5>view中添加一个router-view, 去显示当前的界面
+				<6>切换切换使用router-link, 添加router-link去切换不同的界面
+			*/
+
+			//data
+			var data = {
+				msg: "hello world"
+			};
+
+			//<2>创建多个页面, 其实创建多个组件(一个界面一个组件)
+			var book = Vue.component("book", {
+				template: `<div class="page">
+					<div><router-link to="/bookDetail/100">人间失格</router-link></div>
+					<div><router-link to="/bookDetail/200">源氏物语</router-link></div>
+					<div><router-link to="/bookDetail/300">流浪地球</router-link></div>
+					<div><router-link to="/bookDetail/400">金瓶梅</router-link></div>
+					<div><router-link to="/bookDetail/500">石头记</router-link></div>
+					
+					<div><router-link :to="{name:'bookDetail',params:{id:100}}">人间失格</router-link></div>
+					
+					<div><button @click="dealClick(100)">推荐</button></div>
+				</div>`,
+				beforeDestroy() {
+					console.log("销毁前")
+				},
+				destroyed(){
+					console.log("销毁")
+				},
+				methods: {
+					dealClick(id) {
+						console.log("id=" + id)
+						// 						this.$router.push({
+						// 							path:"/bookDetail"+id
+						// 						})
+						this.$router.push({
+							name: "bookDetail",
+							params: {
+								id: 100
+							},
+
+						})
+
+						// 						this.$router.replace({
+						// 							path:"/bookDetail"+id
+						// 						})
+						//回退
+						//this.$router.go(-1)
+						//前进
+						//this.$router.go(2)
+					}
+				}
+			});
+			var music = Vue.component("music", {
+				template: `<div class="page">Music</div>`
+			});
+			var film = Vue.component("film", {
+				template: `<div class="page">Film</div>`
+			});
+
+			var bookDetail = Vue.component("book-detail", {
+				template: `<div class="page">bookDetail {{id}}</div>`,
+				data() {
+					return {
+						id: 0
+					};
+				},
+				beforeDestroy() {
+					console.log("2销毁前")
+				},
+				destroyed(){
+					console.log("2销毁")
+				},
+				beforeCreate(){
+					console.log("2创建前")
+				},
+				created() {
+					//this.$route 表示当前的路由对象, 其中有个属性params,是路由参数
+					var id = this.$route.params.id;
+					//console.log("id = " + id);
+					console.log("2创建")
+					//this.$router 表示那个路由管理器对象, 是前面创建 VueRouter对象
+					//console.log(this.$router);
+
+					this.id = id;
+				}
+			});
+
+			var musicDetail = Vue.component("music-detail", {
+				template: `<div class="page">musicDetail</div>`
+			});
+
+			var filmDetail = Vue.component("film-detail", {
+				template: `<div class="page">filmDetail</div>`
+			});
+
+			//<3>定义一个路由规则(指定一个路径对应一个界面)
+			//单词
+			// route 路由
+			// router 路由管理者,注意多个r
+			// routes 多个路由, s表示复数
+			var r = new VueRouter({
+				routes: [{
+					path: "/",
+					component: book
+				}, {
+					path: "/book",
+					redirect: "/"
+				}, {
+					path: "/music",
+					component: music
+				}, {
+					path: "/film",
+					component: film
+				}, {
+					path: "/bookDetail/:id",
+					name: "bookDetail",
+					component: bookDetail
+				}, {
+					path: "/musicDetail/:id",
+					component: musicDetail
+				}, {
+					path: "/filmDetail/:id",
+					component: filmDetail
+				}]
+			});
+
+			//vue实例
+			//<4>实例中加载使用路由规则
+			//注意: 用的router, r表示传入一个管理器对象
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				router: r,
+				created() {
+					console.log("new Vue");
+				}
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p><button @click="isShow=!isShow">购买</button></p>
+			<car v-if="isShow"></car>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				isShow:false
+			};
+			Vue.component("car",{
+				template:`<div>
+				<ul>
+					<li v-for="(item,index) in list" :key="index">
+						{{item}}
+					</li>
+				</ul>
+				</div>`,
+				data(){
+					return{
+						list:['第一个商品','第二个商品','第三个商品']
+					}
+				}
+			})
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data
+			});
+		</script>
+	</body>
+</html>

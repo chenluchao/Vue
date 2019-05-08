@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			body{
+				margin: 0;
+			}
+			.header{
+				width: 100%;
+				height: 40px;
+				border-bottom: 1px solid #888;
+				position: relative;
+			}
+			.button-box{
+				width: 100px;
+				height: 40px;
+				position: absolute;
+				right: 0;
+				top: 0;
+				border: 1px solid #ccc;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			.goods-list{
+				width: 200px;
+				height: 200px;
+				border: 1px solid black;
+				position: absolute;
+				right: 10px;
+				top: 45px;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			
+
+			<div class="header">
+				<div>
+					导航条
+				</div>
+				<div class="button-box">
+					<button @click="isShow=!isShow">购物车({{list.length}})</button>
+				</div>
+				<div class="goods-list" v-show="isShow">
+					<div v-for="(item,index) in list">
+						{{item.name}}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world",
+				isShow:false,
+				list:[
+					{
+						id:10001,
+						name:"西瓜",
+						price:10,
+						num:2
+					},{
+						id:10002,
+						name:"芝麻",
+						price:0.1,
+						num:20
+					},{
+						id:10003,
+						name:"水",
+						price:3,
+						num:20
+					}
+				]
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data
+			});
+		</script>
+	</body>
+</html>

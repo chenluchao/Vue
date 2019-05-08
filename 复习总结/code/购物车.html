@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.box{
+				width: 100%;
+				border: 1px solid #ccc;
+			}
+			.nav{
+				padding: 10px 0 10px 0;
+				font-size: 26px;
+				padding-left: 20px;
+				font-weight: bold;
+				border-bottom: 1px solid #ccc;
+			}
+			.shopName{
+				width: 100%;
+				height: 40px;
+				background-color: #999;
+				line-height: 40px;
+				font-size: 18px;
+				padding-left: 30px;
+			}
+			.shopContent{
+				display: flex;
+				background-color: #CCCCCC;
+				border-bottom: 1px solid #eee;
+				height: 30px;
+				line-height: 30px;
+				padding-left: 50px;
+				font-size: 16px;
+			}
+			.price{
+				
+				color: red;
+			}
+			.all-show{
+				width: 100%;
+			}
+			.all-show>div{
+				padding-left: 30px;
+				font-size: 18px;
+				background-color: #EAEAEA;
+				border-bottom: 1px solid #ccc;
+				height: 40px;
+				line-height: 40px;
+			}
+			.all-show>div:nth-of-type(1) span{
+				font-size: 20px;
+				color: lightseagreen;
+				margin: 0 10px;
+			}
+			.all-show>div:nth-of-type(2) span{
+				font-size: 20px;
+				color: crimson;
+				margin: 0 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<div calss="box">
+				<p class="nav">购物车</p>
+
+				<div class="content-box" v-for="(item,index) in list" :key="index">
+					<div class="shopName">
+						<input type="checkbox" @click="shopClick(index)" :checked="item.shopSelect">
+						{{item.shopName}}
+					</div>
+					<div class="shopContent" v-for="(goodsItem,goodsIndex) in item.goods" :key="goodsIndex">
+						<div>
+							<input type="checkbox" @click="goodsClick(index,goodsIndex)" :checked="goodsItem.isSelect">
+							{{goodsItem.goodsName}}
+						</div>
+						<div class="price">￥{{goodsItem.goodsPrice}}元</div>
+					</div>
+				</div>
+			</div>
+			<div class="all-show">
+				<div>已选<span>{{num}}</span>件商品</div>
+				<div>总价为<span>{{sum}}</span>元</div>
+				<div>
+					<input type="checkbox" :checked="allSelect" @click="allClick">
+					全选
+				</div>
+			</div>
+		</div>
+		<script src="js/vue/vue.js"></script>
+		<script>
+			//data
+			var data = {
+				num: 0,
+				sum: 0,
+				allSelect: false,
+				list: [{
+					shopName: "三只松鼠",
+					shopSelect: false,
+					goods: [{
+						goodsName: "坚果大礼包",
+						goodsPrice: "118",
+						isSelect: false
+					}, {
+						goodsName: "水果大礼包",
+						goodsPrice: "96",
+						isSelect: false
+					}]
+				}, {
+					shopName: "小米之家",
+					shopSelect: false,
+					goods: [{
+						goodsName: "小米8",
+						goodsPrice: "2999",
+						isSelect: false
+					}, {
+						goodsName: "小米曲面屏液晶电视",
+						goodsPrice: "4299",
+						isSelect: false
+					}]
+				}]
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				methods: {
+					allShow() { //监听设置全选状态
+						var allSelect = false
+						for (var i = 0; i < this.list.length; i++) {
+							if (this.list[i].shopSelect == false) {
+								allSelect = false
+								break
+							} else {
+								allSelect = true
+							}
+						}
+						this.allSelect = allSelect
+						console.log(this.allSelect)
+					},
+					goodsClick(index, goodsIndex) { //点击每一件商品时
+						this.list[index].goods[goodsIndex].isSelect = !this.list[index].goods[goodsIndex].isSelect
+						if (this.list[index].goods[goodsIndex].isSelect) {
+							this.num += 1
+							this.sum += parseFloat(this.list[index].goods[goodsIndex].goodsPrice)
+						} else {
+							this.num -= 1
+							this.sum -= parseFloat(this.list[index].goods[goodsIndex].goodsPrice)
+						}
+						var shopGoodsList = this.list[index].goods
+						var shopSelect = true
+						for (var i = 0; i < shopGoodsList.length; i++) {
+							if (shopGoodsList[i].isSelect == false) {
+								shopSelect = false
+							}
+						}
+						this.list[index].shopSelect = shopSelect
+						this.allShow()
+						//console.log(this.list[index].shopSelect)
+					},
+					shopClick(index) { //点击商铺
+						this.list[index].shopSelect = !this.list[index].shopSelect
+						if (this.list[index].shopSelect == true) {
+							this.num += this.list[index].goods.length
+							for (var i = 0; i < this.list[index].goods.length; i++) {
+								this.sum += parseFloat(this.list[index].goods[i].goodsPrice)
+							}
+						} else {
+							this.num -= this.list[index].goods.length
+							for (var i = 0; i < this.list[index].goods.length; i++) {
+								this.sum -= parseFloat(this.list[index].goods[i].goodsPrice)
+							}
+						}
+						var shopSelect = this.list[index]
+						if (shopSelect.shopSelect == true) {
+							for (var i = 0; i < shopSelect.goods.length; i++) {
+								shopSelect.goods[i].isSelect = true
+							}
+						} else {
+							for (var i = 0; i < shopSelect.goods.length; i++) {
+								shopSelect.goods[i].isSelect = false
+							}
+						}
+						this.allShow()
+					},
+					allClick() { //点击全选按钮
+						if (this.allSelect == false) {
+							this.allSelect = true
+							this.sum=0
+							this.num=0
+							for (var i = 0; i < this.list.length; i++) {
+								this.list[i].shopSelect = true
+								for (var j = 0; j < this.list[i].goods.length; j++) {
+									this.list[i].goods[j].isSelect = true
+									this.num += 1
+									this.sum += parseFloat(this.list[i].goods[j].goodsPrice)
+								}
+							}
+						} else {
+							this.allSelect = false
+							for (var i = 0; i < this.list.length; i++) {
+								this.list[i].shopSelect = false
+								for (var j = 0; j < this.list[i].goods.length; j++) {
+									this.list[i].goods[j].isSelect = false
+									this.num -= 1
+									this.sum -= parseFloat(this.list[i].goods[j].goodsPrice)
+								}
+							}
+						}
+
+					},
+				}
+			});
+		</script>
+	</body>
+</html>

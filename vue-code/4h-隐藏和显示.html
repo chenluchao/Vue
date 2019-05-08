@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<button @click="dealShow">显示/隐藏</button>
+
+			<p v-if="isShow">{{ msg }}</p>
+
+			<p v-show="isShow">{{ msg }}</p>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world",
+				isShow: false
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				methods: {
+					dealShow() {
+						this.isShow = !this.isShow;
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			body {
+				margin: 0;
+			}
+			.navbar {
+				width: 100%;
+				height: 44px;
+				border-bottom: 1px solid #888;
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+				line-height: 44px;
+				text-align: center;
+			}
+			.navbar .title {
+				flex-grow: 1;
+			}
+			.navbar .left,
+			.navbar .right {
+				flex-basis: 60px;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<navbar left="L" title="首页" right="R"></navbar>
+			<navbar left="LL" title="子页" right="RR"></navbar>
+			<navbar left="LLL" title="列表" right="RRR"></navbar>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			Vue.component("navbar",{
+				props:["left","title","right"],
+				template:`<div class="navbar">,
+							<div class="left">{{left}}</div>
+							<div class="title">{{title}}</div>
+							<div class="right">{{right}}</div>
+						</div>`
+			})
+			
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: {}
+			});
+		</script>
+	</body>
+</html>

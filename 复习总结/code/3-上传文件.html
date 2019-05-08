@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			.img-upload-box{
+				width: 200px;
+				height: 230px;
+				border: 1px solid #888;
+				padding: 10px;
+			}
+			.img-box{
+				width: 200px;
+				height: 200px;
+				position: relative;
+				box-sizing: border-box;
+				border: 1px solid black;
+
+			}
+			.img-box input{
+				width: 200px;
+				height: 200px;
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				left: 0px;
+				top: 0px;
+			}
+			.img-box img{
+				width: 200px;
+				height: 200px;
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				left: 0px;
+				top: 0px;
+			}
+			.img-upload-box button{
+				width: 200px;
+				height: 30px;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			
+			<div class="img-upload-box">
+				<div class="img-box">
+					
+					<img :src="src" alt="">
+					<input type="file" id="img-input"@change="dealChange">
+				</div>
+				<div>
+					<button @click="dealUpload">上传</button>
+				</div>
+			</div>
+
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+		<script src="js/axios/axios.min.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world",
+				src:"",
+				file:""
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				methods:{
+					dealChange(){
+						console.log("dealChange")
+
+						//1.获取input标签对象
+						var tag = document.getElementById("img-input")
+						console.log(tag.files)
+
+						//2.如果选择了图片, 获取图片对象
+						if(tag.files.length == 0){
+							alert("没有选择图片")
+							return
+						}
+						var file = tag.files[0]
+						console.log(file)
+						//保存了选择的图片
+						this.file = file
+
+
+						//3.把file对象获取一个URL网址
+						var url = window.URL.createObjectURL(file)
+						console.log(url)
+
+						//4.显示图片
+						this.src = url
+					},
+					dealUpload(){
+
+						if(this.file == ""){
+							alert("没有选择图片")
+							return
+						}
+
+						//Step1: 构造一个formData
+						var formData = new FormData()
+						formData.append("username","admin")
+						formData.append("password","123")
+						formData.append("file",this.file)
+
+						//Step2: 发起POST请求
+						var url = "http://127.0.0.1/teach/uploadtest/deal.php"
+						axios.post(url,formData).then(res=>{
+							//
+							console.log(res.data)
+							if(res.data.code == "1"){
+								alert("上传成功")
+							}else{
+								alert("上传失败")
+							}
+						}).catch(error=>{
+							//
+							alert("上传错误,error")
+						})
+
+
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

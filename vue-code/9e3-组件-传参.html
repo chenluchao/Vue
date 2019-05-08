@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+
+		<style>
+			#app {
+				width: 300px;
+				min-height: 300px;
+				background-color: lightgray;
+			}
+
+			.goods-count {
+				width: 100px;
+				min-height: 100px;
+				background-color: lightcoral;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>{{ msg }}</p>
+			<button @click="ccc++">++++</button>
+			<goods-count :count="ccc"></goods-count>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world",
+				ccc: 1000
+			};
+
+			Vue.component("goods-count", {
+				props: ["count"],
+				data() {
+					return {
+						in_count: this.count
+					};
+				},
+				template: `<div class="goods-count">
+					{{in_count}} {{count}}
+					<button @click="in_count++">+1</button>
+				</div>`,
+				watch: {
+					count() {
+						this.in_count = this.count;
+					}
+				}
+			});
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data
+			});
+		</script>
+	</body>
+</html>

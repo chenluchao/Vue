@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			.box {
+				width: 300px;
+				height: 100px;
+				border: 1px solid black;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>{{ msg }}</p>
+			<!-- 组件的使用 -->
+			<hello></hello>
+			<hello></hello>
+			<hello></hello>
+			<hello></hello>
+
+			<first-component></first-component>
+			<!-- <FirstComponent></FirstComponent> -->
+		</div>
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world"
+			};
+			//创建最简单的组件
+			//组件名字: 建议全部小写,中间用-分割, 最好不要用驼峰式
+			//前面返回的这个值很少用, 一般不写
+			//template参数必须定义,不定义报错, 里面写html代码
+			//特别注意:
+			//	如果名字定义全小写, 用的时候直接用
+			//	如果名字驼峰式, 用的是全小写和-形式
+			//特别注意:
+			//	要定义放在实例的前面
+
+			Vue.component("first-component", {
+				template: `<div class='box'>
+					<div>first</div>
+					<div>component</div>
+				</div>`
+			});
+
+			var Hello = Vue.component("hello", {
+				template: `<div class='box'>
+					<div>Hello</div>
+					<div>world</div>
+				</div>`
+			});
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				mounted() {}
+			});
+		</script>
+	</body>
+</html>

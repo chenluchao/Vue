@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>{{ msg }}</p>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+		<script src="js/axios/axios.min.js"></script>
+
+		<script>
+			var bookListUrl =
+				"http://127.0.0.1/project/dou/api/public/index.php?m=book&a=list";
+			var musicListUrl =
+				"http://127.0.0.1/project/dou/api/public/index.php?m=music&a=list";
+			var filmListUrl =
+				"http://127.0.0.1/project/dou/api/public/index.php?m=film&a=list";
+
+			//data
+			var data = {
+				msg: "hello world"
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				created() {
+					this.allRequest();
+				},
+				methods: {
+					allRequest() {
+						//定义好的
+						//这个函数, 返回一个axios的请求对象,但是并不执行
+						var func1 = function() {
+							return axios.get(bookListUrl);
+						};
+
+						var func2 = function() {
+							return axios.get(musicListUrl);
+						};
+
+						var func3 = function() {
+							return axios.get(filmListUrl);
+						};
+
+						//格式
+						//axios.all(存储所有请求数据).then(axios.spread(所有请求的response){})
+						var callback = function(r1, r2, r3) {
+							console.log("callback");
+							console.log(r1.data);
+							console.log(r2.data);
+							console.log(r3.data);
+						};
+						axios
+							.all([func1(), func2(), func3()])
+							.then(axios.spread(callback));
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

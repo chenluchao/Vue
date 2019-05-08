@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			body{
+				margin: 0
+			}
+			.box{
+				border-collapse: collapse;
+				width: 100%;
+			}
+			.box thead{
+				background-color: lightblue;
+				
+			}
+			.box th,.box td{
+				
+				height: 40px;
+				font-size: 14px;
+				color: #444;
+			}
+			/* css3 新提供的选择器,  
+				nth-child(1开始序号)  
+				nth-child(a+bn)   nth-child(1+2n)  
+				nth-child(odd)   
+				nth-child(even)*/
+			.box tbody tr:nth-child(even){
+				background-color: #eaeaea;
+			}
+			.add-new{
+				padding: 10px;
+				box-sizing: border-box;
+				border: 1px solid #ccc;
+			}
+			.add-new button{
+				width: 100%;
+			}
+
+			.show-box div{
+				height: 40px;
+			}
+			.show-box button{
+				width: 45%;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			
+			<div>
+
+				<!-- //Step2: 显示数据 -->
+				<table border="1" class="box">
+					<thead>
+						<tr>
+							<th>序号</th>
+							<th>标题</th>
+							<th>时间</th>
+							<th>是否完成</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="(item,index) in list">
+								<td>{{index+1}}</td>
+								<td>{{item.title}}</td>
+								<td>{{item.time}}</td>
+								<td>{{item.isFinish?"已完成":"未完成"}}</td>
+								<td>
+									<!-- Step3: 添加删除操作,  数据驱动界面,  删除数据, 界面自动变化 -->
+									<button @click="dealDelete(index)">删除</button>
+
+									<!-- Step4: 修改操作,  数据驱动界面,  修改数据, 界面自动变化 -->
+									<button @click="dealSetFinish(index)">完成</button>
+
+									<button @click="isShowBox=false">修改</button>
+								</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="add-new">
+
+					<!-- Step6: 实现切换-->
+					<button @click="isShowBox=!isShowBox">添加新任务</button>
+				</div>
+
+				<!-- Step5: 线创建对话框 -->
+				<dialog class="show-box" open v-if="isShowBox">
+					<div>标题 <input type="text" v-model="title"></div>
+					<div>时间 <input type="text" v-model="time"></div>
+					<div class="show-box-control">
+						<button @click="dealAdd">添加</button>
+						<button @click="isShowBox=false">取消</button>
+						
+					</div>
+				</dialog>
+			</div>
+
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world",
+
+				isShowBox:false,
+				title:"",
+				time:"",
+
+				//Step1: 定义数据
+				list:[
+					{
+						title:"今天要去火",
+						time:"今天 12:00",
+						isFinish:false
+					},{
+						title:"今天要打油, 做个温馨的晚饭",
+						time:"今天 8:00",
+						isFinish:false
+					},{
+						title:"今天练功",
+						time:"今天 12:00",
+						isFinish:false
+					},
+				]
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				methods:{
+
+					//-- Step7: 处理添加-->
+					dealAdd(){
+
+						if(this.title == "" || this.time == ""){
+							alert("请输入标题和内容")
+							return
+						}
+
+						var dict = {
+							title:this.title,
+							time:this.time,
+							isFinish:false
+						}
+
+						this.list.push(dict)
+
+						this.title = ""
+						this.time = ""
+						this.isShowBox = false
+					},
+					dealDelete(index){
+
+						//数据驱动界面, 数据改变, 界面会自动改变
+						this.list.splice(index,1)
+					},dealSetFinish(index){
+
+						this.list[index].isFinish = true
+						
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			.box {
+				width: 100px;
+				height: 100px;
+				background-color: rebeccapurple;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>{{ msg }}</p>
+
+			<!-- 点击事件 -->
+			<p><button v-on:click="dealClick">点击</button></p>
+			<p><button @click="dealClick">点击</button></p>
+			<p>{{ msg2 }}</p>
+			<p><button @dblclick="dealDblclick">点击</button></p>
+
+			<!-- 鼠标事件 -->
+			<p>{{ msg3 }}</p>
+			<div
+				class="box"
+				@mouseenter="dealEnter"
+				@mousemove="dealMove($event)"
+				@mouseleave="dealLeave"
+			></div>
+
+			<hr />
+			<!-- 键盘事件 -->
+			<p>{{ msg4 }}</p>
+			<input
+				type="text"
+				v-model="info"
+				@keydown="dealDown"
+				@keyup="dealUp"
+				@keypress="dealPress"
+				@change="dealChange"
+				@focus="dealFocus"
+			/>
+
+			<hr />
+			<p v-show="isShow">我是一个文本</p>
+			<button @click="isShow=!isShow">显示/隐藏</button>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world",
+				msg2: "22222",
+				msg3: "-----",
+				info: "info",
+				msg4: "msg4",
+				isShow: true
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				methods: {
+					dealClick() {
+						this.msg = "click";
+					},
+					dealDblclick() {
+						this.msg2 = "click";
+					},
+					dealEnter() {
+						this.msg3 = "enter";
+					},
+					dealMove(e) {
+						console.log(e);
+						this.msg3 = `move ${e.offsetX} ${e.offsetY}`;
+					},
+					dealLeave() {
+						this.msg3 = "leave";
+					},
+
+					dealDown() {
+						//this.msg4 = "down";
+						console.log("down");
+					},
+
+					dealUp() {
+						//this.msg4 = "up";
+						console.log("up");
+					},
+
+					dealPress() {
+						//this.msg4 = "Press";
+						console.log("press");
+					},
+					dealChange() {
+						this.msg4 = "Change";
+					},
+					dealFocus() {
+						this.msg4 = "Focus";
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

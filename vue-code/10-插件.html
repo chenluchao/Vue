@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>{{ msg }}</p>
+			<input type="text" v-model="r" />
+			<button @click="dealCompute">计算</button>
+
+			<p>area = {{ area }}</p>
+
+			<p>pi = {{ pi }}</p>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world",
+				r: 0,
+				area: 0
+			};
+
+			//Step1: 定义插件
+			var MathPlugin = {
+				//这个install是插件必备的
+				install(Vue, options) {
+					console.log("install");
+
+					if (options) {
+						console.log("options可用");
+						console.log(options);
+					}
+
+					//添加全局属性
+					Vue.pi = 3.14159;
+
+					Vue.prototype.pi = 3.14159;
+
+					//添加全局函数
+					Vue.circleArea = r => {
+						return 2 * Vue.pi * r;
+					};
+				}
+			};
+
+			//Step2: 挂载插件(插件挂载vue上)
+			//作用: 执行MathPlugin中install函数, 同时把自身和一些参数传入其中
+			//	install函数中会给这个Vue添加属性,添加函数......
+			Vue.use(MathPlugin, { v: 10 });
+			//Vue.use(MathPlugin);
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				methods: {
+					dealCompute() {
+						//Step3: 直接使用插件中定义的函数,变量.....
+						//注意: Vue上直接加的, 通过 Vue.pi这种形式用, 不要用this.pi或者 {{pi}}
+						//	如果是加载Vue.prototype上, 可以通过this.pi和{{pi}}去访问
+						//	但是没有数据绑定......
+						this.area = Vue.circleArea(this.r);
+					}
+				}
+			});
+
+			app.pi = 100;
+		</script>
+	</body>
+</html>

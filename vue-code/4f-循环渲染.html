@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>
+				<li v-for="(item,index) in arr1" :key="index">
+					{{ index }} {{ item }}
+				</li>
+			</p>
+
+			<p>
+				<li v-for="item in arr1">
+					{{ item }}
+				</li>
+			</p>
+
+			<p>
+				<li v-for="(v,i) in arr2">
+					{{ i + " " + v.id + " " + v.mark + " " + v.price }}
+				</li>
+			</p>
+
+			<p>
+				<li v-for="(value,key) in dog">
+					{{ key + " " + value }}
+				</li>
+			</p>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world",
+				arr1: [10, 20, 30, 40, 50, 60],
+				arr2: [
+					{
+						id: 1001,
+						mark: "QQ",
+						price: 30000
+					},
+					{
+						id: 1002,
+						mark: "BMW",
+						price: 300000
+					},
+					{
+						id: 1003,
+						mark: "wu ling hong guang",
+						price: 5000000
+					}
+				],
+
+				dog: {
+					id: 1004,
+					mark: "A la si jia xueqiaoquan",
+					price: 30000,
+					age: 10
+				}
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data
+			});
+		</script>
+	</body>
+</html>

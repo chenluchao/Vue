@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+
+		<style>
+			#app {
+				width: 300px;
+				min-height: 300px;
+				background-color: lightgray;
+			}
+
+			.goods-count {
+				width: 100px;
+				min-height: 100px;
+				background-color: lightcoral;
+			}
+			.total-price {
+				width: 100px;
+				min-height: 100px;
+				background-color: lightblue;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<goods-count></goods-count>
+
+			<total-price></total-price>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world"
+			};
+
+			//Step1: 通过新的vue实例, 叫做事件总线
+			var eventBus = new Vue();
+
+			Vue.component("total-price", {
+				template: `<div class="total-price">
+					总价 = {{ count * price}}
+				</div>`,
+				data() {
+					return {
+						count: 0,
+						price: 10
+					};
+				},
+				created() {
+					//Step3: 监听mychange事件的触发
+					//参数1: mychange, 需要监听的事件名
+					//参数2: 事件触发了之后, 执行的事件处理函数
+					//var self = this;
+					eventBus.$on("mychange", c => {
+						console.log("c = " + c);
+
+						//total-price组件内的count = 传入的值
+						this.count = c;
+					});
+				}
+			});
+
+			Vue.component("goods-count", {
+				template: `<div class="goods-count">
+					{{count}}
+					<button @click="dealAdd">+1</button>
+				</div>`,
+				data() {
+					return {
+						count: 0
+					};
+				},
+				methods: {
+					dealAdd() {
+						this.count++;
+
+						//Step2: 触发一个事件
+						//事件名: mychange
+						//事件附带的值: this.count
+						eventBus.$emit("mychange", this.count);
+					}
+				}
+			});
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data
+			});
+		</script>
+	</body>
+</html>

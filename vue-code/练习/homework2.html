@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			.photo-show {
+				width: 200px;
+				height: 200px;
+				border: 1px solid #ccc;
+				border-radius: 10px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			.photo-show img {
+				width: 95%;
+				height: 95%;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<photo-show img1="img/1.jpg"img2="img/2.jpg"></photo-show>
+		</div>
+
+		<script src="../js/vue/vue.js"></script>
+		<script>
+			
+			Vue.component("photo-show",{
+				props:['img1','img2'],
+				template:`<div class="photo-show">,
+				<img :src="src" @click="dealChange" />
+				</div>`,
+				created(){
+					if(this.img1){
+						this.src = this.img1
+					}
+				},
+				data(){
+					return{
+						src:""
+					}
+				},
+				methods:{
+					dealChange(){
+						if(this.src == this.img1){
+							this.src = this.img2
+						}else{
+							this.src = this.img1
+						}
+					}
+				}
+			})
+			
+			//data
+			var data = {
+				
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data
+			});
+		</script>
+	</body>
+</html>

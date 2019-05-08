@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style type="text/css">
+			.box {
+				width: 350px;
+				border: 1px solid #ccc;
+				overflow: hidden;
+			}
+
+			.info {
+				text-align: center;
+				width: 100%;
+				height: 200px;
+				background-color: #3c8c0c;
+				color: #fff;
+			}
+
+			.title {
+				height: 50px;
+				line-height: 50px;
+				font-size: 20px;
+			}
+
+			.num {
+				font-weight: bold;
+				font-size: 60px;
+				line-height: 90px;
+			}
+
+			.show {
+				line-height: 60px;
+				font-size: 16px;
+			}
+
+			.input>div {
+				width: 90%;
+				height: 40px;
+				border: 1px solid #ddd;
+				margin-left: 5%;
+				margin-top: 20px;
+				background-color: #D8D8D8;
+				border-radius: 5px;
+				line-height: 40px;
+				font-size: 18px;
+				padding: 0 20px;
+				box-sizing: border-box;
+				display: flex;
+			}
+
+			.input>div>div:nth-of-type(2) {
+				margin-left: 160px;
+				width: 30px;
+				height: 100%;
+				overflow: hidden;
+			}
+
+			.input>div>div:nth-of-type(2) input {
+				width: 30px;
+				height: 100%;
+				border: none;
+				background-color: #d8d8d8;
+				outline: none;
+			}
+
+			.input>div>div:nth-of-type(3) {
+				overflow: hidden;
+				margin-left: 10px;
+				font-size: 12px;
+			}
+
+			button {
+				margin: 20px 10px;
+				width: 90%;
+				height: 40px;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="clc">
+			<div class="box">
+				<div class="info">
+					<div class="title">BMI</div>
+					<div class="num">{{num}}</div>
+					<div class="show">{{show}}</div>
+				</div>
+				<div class="input">
+					<div class="sex">
+						<div>性别</div>
+						<div>{{this.isMan==true?'男人':'女人'}}</div>
+						<div @click="isMan = !isMan">切换</div>
+					</div>
+					<div class="height">
+						<div>高度</div>
+						<div>
+							<input type="text" v-model="height">
+						</div>
+						<div>cm</div>
+					</div>
+					<div class="weight">
+						<div>重量</div>
+						<div>
+							<input type="text" v-model="weight">
+						</div>
+						<div>Kg</div>
+					</div>
+				</div>
+				<button @click="clccalc">计算结果</button>
+			</div>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				num: 0,
+				show: "请输入信息进行测试",
+				isMan: true,
+				height: "",
+				weight: ""
+			};
+
+			//vue实例
+			var clc = new Vue({
+				el: "#clc",
+				data: data,
+				methods: {
+					clccalc() {
+						var height = parseFloat(this.height)
+						var weight = parseFloat(this.weight)
+						if (this.isMan == true) {
+							var bmi = (height - 80) * 0.7
+						} else {
+							var bmi = (height - 70) * 0.6
+						}
+						console.log(bmi)
+						var rate = (bmi / weight).toFixed(1)
+						this.num = rate
+						if (rate < 0.7) {
+							this.show = "极度瘦"
+						}
+						if (rate >= 0.7 && rate < 0.8) {
+							this.show = "太瘦"
+						}
+						if (rate >= 0.8 && rate < 0.9) {
+							this.show = "偏瘦"
+						}
+						if (rate >= 0.9 && rate < 1.1) {
+							this.show = "正常"
+						}
+						if (rate >= 1.1 && rate < 1.2) {
+							this.show = "偏胖"
+						}
+						if (rate >= 1.2 && rate < 1.3) {
+							this.show = "肥胖"
+						}
+						if (rate >= 1.3) {
+							this.show = "极度肥胖"
+						}
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+
+		<style>
+			body{
+				margin: 0
+			}
+			.goods-cart h3{
+				text-align: center;
+			}
+			.shop-title{
+				height: 44px;
+				background-color: #eaeaea;
+				line-height: 44px;
+				padding-left: 10px;
+			}
+			.goods-cart ul{
+				padding-right: 20px;
+			}
+			.goods-cart ul,li{
+				list-style: none;
+			}
+			.goods-cart li{
+				height: 34px;
+				background-color: #eaeaea;
+				line-height: 34px;
+				padding-left: 10px;
+				padding-right: 10px;
+				margin-bottom: 5px;
+				display: flex;
+				justify-content: space-between;
+			}
+			.goods-title{
+				flex-basis: 250px;
+			}
+			.goods-num{
+				flex-basis: 100px;
+				text-align: center;
+			}
+			.goods-price{
+				flex-basis: 50px;
+				text-align: center;
+			}
+
+			.info{
+				padding: 20px;
+			}
+			.info div{
+				height: 30px;
+			}
+			.all-num{
+				color: blue;
+				font-size: 24px;
+			}
+			.all-price{
+				color: red;
+				font-size: 24px;
+			}
+		</style>
+	</head>
+	<body>
+
+		<!-- 
+			1.构造数据结构
+			2.显示所有商品
+			3.优化显示样式
+			4.个数改变, 总价改变
+			5.删除数据
+			6.各种选择  [难点]
+		 -->
+		<!-- 显示视图 -->
+		<div id="app">
+			<goods-cart></goods-cart>
+		</div>
+
+		<template id="cart">
+			<div class="goods-cart">
+				<h3>购物车</h3>
+
+
+				<!-- 显示所有商铺 -->
+				<div v-for="(item,index) in list" v-if="item.list.length>0">
+					<div class="shop-title"><input type="checkbox" v-model="item.isSelect" @change="dealSelectShop(index)">{{item.title}}</div>
+					<ul>
+						<div class="goods-header">商品名</div>
+						<li>
+							<span class="goods-title">商品名</span>
+							<span class="goods-price">单价</span>
+							<span class="goods-num">数量</span>
+
+							<span class="goods-oprate">操作</span>
+						</li>
+						<li v-for="(goodsItem,goodsIndex) in  item.list">
+							<span class="goods-title">
+								<input type="checkbox" v-model="goodsItem.isSelect" @change="dealSelectGoods(index,goodsIndex)">{{goodsItem.title}}
+							</span>
+							<span class="goods-price">{{goodsItem.price}}</span>
+							<span class="goods-num">
+								<button @click="dealSubNum(index,goodsIndex)">-</button>
+								{{goodsItem.num}}
+								<button @click="dealAddNum(index,goodsIndex)">+</button>
+							</span>
+
+							<span class="goods-oprate">
+								<button @click="dealDelete(index,goodsIndex)">删除</button>
+							</span>
+						</li>
+					</ul>
+				</div>
+				<div class="info">
+					<div>
+						全选 <input type="checkbox" v-model="isSelectAll" @change="dealSelectAll">
+					</div>
+					<div>
+						您已经选择了<span class="all-num"> {{allNum}}</span> 种商品
+					</div>
+					<div>
+						总价为 <span class="all-price">{{allPrice}}</span> 元
+					</div>
+					<div>
+						<button>结算</button>
+					</div>
+				</div>
+			</div>
+		</template>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world",
+			};
+			//购物车组件
+			var GoodsCart = Vue.component("goods-cart", {
+				//对应的模板, 传入选择器
+				template: `#cart`,
+				data() {
+					return {
+						//是否全选
+						isSelectAll: false,
+						//list 存储所有商铺 - 多个商铺
+						list: [{
+								id: 1001,
+								title: "底特律24小时无人服务中心",
+								isSelect: false,
+								list: [{
+									id: 2001,
+									title: "RA9-家政型机器人女",
+									price: "3000",
+									num: 2,
+									isSelect: true
+								}, {
+									id: 2002,
+									title: "KN100-格斗型机器人男",
+									price: "7000",
+									num: 1,
+									isSelect: false
+								}, ]
+							},
+							{
+								id: 1002,
+								title: "未来科技中心",
+								isSelect: false,
+								list: [{
+									id: 2001,
+									title: "无人通勤飞机",
+									price: "30000",
+									num: 1,
+									isSelect: false
+								}, {
+									id: 2001,
+									title: "MC2-全息投影电影系统",
+									price: "20000",
+									num: 2,
+									isSelect: false
+								}, ]
+							}
+						]
+						//list end
+					}
+				},
+				computed: {
+					///计算属性, 通过选择, 计算选择的商品的种类
+					allNum() {
+						//遍历所有商铺的, 所有商品
+						//	如果商品的isSelect为真,  数量+1
+						var num = 0;
+						for (var shop of this.list) {
+							for (var goods of shop.list) {
+								if (goods.isSelect) {
+									num++
+								}
+							}
+						}
+						return num
+					},
+
+					//计算属性, 获取所有价格
+					allPrice() {
+						//遍历所有商铺的, 所有商品
+						//	总价 +=   商品价格*数量
+						var price = 0;
+						for (var shop of this.list) {
+							for (var goods of shop.list) {
+								if (goods.isSelect) {
+									price += goods.price * goods.num
+								}
+							}
+						}
+
+						return price
+					}
+				},
+
+				methods: {
+
+					//点击   全选
+					dealSelectAll() {
+
+						for (var shop of this.list) {
+							shop.isSelect = this.isSelectAll
+
+							for (var goods of shop.list) {
+								goods.isSelect = this.isSelectAll
+							}
+						}
+					},
+
+					//点击  商铺
+					dealSelectShop(index) {
+
+						//逻辑: 如果商铺是选择的, 让其中所有商品被选择
+						//	否则取消所有选择
+						var shop = this.list[index]
+						for (var goods of shop.list) {
+							goods.isSelect = shop.isSelect
+						}
+
+
+
+						//遍历所有商铺
+						var isSelectAll = true
+						for (var shop of this.list) {
+							if (shop.isSelect == false) {
+								isSelectAll = false
+							}
+						}
+						this.isSelectAll = isSelectAll
+
+
+					},
+
+					//点击  商品
+					dealSelectGoods(index, goodsIndex) {
+
+
+						//=============修改商铺状态==============
+						//获取商铺
+						var shop = this.list[index]
+						//默认是选择商铺了
+						var isSelectShop = true
+						//如果检测到一个商品没有选择,  不是全选了
+						for (var goods of shop.list) {
+							if (goods.isSelect == false) {
+								isSelectShop = false
+							}
+						}
+						shop.isSelect = isSelectShop
+
+
+						//=============修改全选状态==============
+						//遍历所有商铺
+						var isSelectAll = true
+						for (var shop of this.list) {
+							if (shop.isSelect == false) {
+								isSelectAll = false
+							}
+						}
+						this.isSelectAll = isSelectAll
+						console.log(this.list)
+					},
+					//点击  删除
+					dealDelete(index, goodsIndex) {
+						//先获取商铺数据
+						var shop = this.list[index]
+
+						//在获取商品
+						shop.list.splice(goodsIndex, 1)
+
+						//遍历所有商铺
+						if (this.allNum == 0) {
+							this.isSelectAll = false
+						}
+
+
+					},
+
+					//点击  商品 -
+					dealSubNum(index, goodsIndex) {
+						var shop = this.list[index]
+						var goods = shop.list[goodsIndex]
+						var newNum = goods.num - 1
+						if (newNum > 0) {
+							goods.num -= 1
+						}
+
+					},
+
+					//点击  商品 +
+					dealAddNum(index, goodsIndex) {
+
+						var shop = this.list[index]
+						var goods = shop.list[goodsIndex]
+						goods.num += 1
+					}
+				}
+			})
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data
+			});
+		</script>
+	</body>
+</html>

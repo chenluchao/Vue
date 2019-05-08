@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			.box{
+				box-sizing: border-box;
+				width: 500px;
+				border: 1px solid #ccc;
+				padding-left: 30px;
+				padding-right: 30px;
+				border-top: 3px solid #f90;
+			}
+			.header{
+				width: 100%;
+			}
+			.header button{
+				width: 150px;
+				margin-left: 50px;
+				margin-top: 10px;
+				height: 30px;
+			}
+			.content-box{
+				border-top: 1px solid #ddd;
+				margin-top: 20px;
+			}
+			.con{
+				display: flex;
+				border-bottom: 1px solid #ccc;
+			}
+			.nickname{
+				width: 60px;
+				height: 30px;
+				line-height: 30px;
+				overflow: hidden;
+				font-size: 16px;
+				color: #45a2ff;
+			}
+			.content{
+				line-height: 30px;
+				width: 380px;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="clc">
+			<div class="box">
+				<div class="header">
+					<div>
+						<span>昵称：</span><input type="text" v-model="nickname">
+					</div>
+					<div>
+						<span>内容：</span><textarea v-model="content" cols="21" rows="1"></textarea>
+					</div>
+					<button @click="clcUpdata">发布</button>
+				</div>
+				<div class="content-box">
+					<div class="con" v-for="(item,index) in list" :key="index">
+						<div class="nickname">{{item.nickname}}:</div>
+						<div class="content">{{item.content}}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				nickname:"",
+				content:"",
+				list:[{
+					nickname:"小明",
+					content:"哈哈哈"
+				},{
+					nickname:"小化",
+					content:"呵呵"
+				},{
+					nickname:"大狗",
+					content:"汪汪安徽爱u市场办事处v不是啊吵闹hi哦成安徽爱u市场办事处v不是啊吵闹hi哦安徽爱u市场办事处v不是啊吵闹hi哦安徽爱u市场办事处v不是啊吵闹hi哦本v卡机城堡"
+				}]
+			};
+			//vue实例
+			var clc = new Vue({
+				el: "#clc",
+				data: data,
+				methods:{
+					clcUpdata(){
+						var nickname = this.nickname
+						var content = this.content
+						if(nickname==""||content==""){
+							alert("请输入昵称和评论内容")
+							return
+						}
+							var dict={
+								"nickname":nickname,
+								"content":content
+							}
+							this.list.push(dict)
+							this.nickname = ""
+							this.content = ""
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

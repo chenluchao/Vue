@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			#app {
+				width: 300px;
+				min-height: 300px;
+				background-color: lightgray;
+			}
+			.goods-count {
+				width: 100px;
+				min-height: 100px;
+				background-color: lightcoral;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div id="app">
+			<p>{{c}}</p>
+			<goods start="2" @mychange="dealChange"></goods>
+		</div>
+		
+		<script src="../js/vue/vue.js"></script>
+		<script src="../js/vue/vue-resource.js"></script>
+		<script>
+			var data = {
+				c:10
+			};
+			
+			Vue.component("goods",{
+				props:["start"],
+				template:`<div class="goods-count">
+				{{in_count}}
+				<button @click="dealAdd">+1</button>
+				</div>`,
+				data(){
+					return{
+						in_count:this.start
+					}
+				},
+				created(){
+					this.$emit("mychange",this.in_count);
+				},
+				methods:{
+					dealAdd(){
+						this.in_count++
+						this.$emit("mychange",this.in_count);
+					}
+				}
+			})
+			
+			var app = new Vue({
+				el:"#app",
+				data:data,
+				methods:{
+					dealChange(e){
+						this.c = e
+					}
+				}
+			})
+			
+		</script>
+	</body>
+</html>

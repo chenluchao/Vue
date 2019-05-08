@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			.cut-line{
+				overflow: hidden;
+				display: -webkit-box;
+				-webkit-line-clamp:3;
+				-webkit-box-orient: vertical;
+			}
+			.comment-button-box{
+				display: flex;
+				flex-direction: row-reverse;
+			}
+
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<div>
+					<div>2019年荷兰进口高营养天然无污染荷兰豆</div>
+					<div>单价: 20元</div>
+					<div>数量: <input type="text" value="3"></div>
+			</div>
+			<div>
+				<p>商品评论</p>
+				<div :class="{'cut-line':isCut}" >
+						不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 不错的的商品, 吃了很开心, 
+				</div>
+				<div class="comment-button-box">
+					<span @click="isCut=!isCut">{{isCut?'展开':'折叠'}}</span>
+				</div>
+
+			</div>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world",
+				isCut:true
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data
+			});
+		</script>
+	</body>
+</html>

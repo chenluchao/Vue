@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			.active{
+				background-color: #f90;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<ul>
+				<li v-for="(item,index) in list" :key="index" @click="dealClick($event,index)">
+					{{item}}
+				</li>
+			</ul>
+			<p><button>购买</button></p>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			
+			
+			//data
+			var data = {
+				list: ['第一件商品','第二件商品','第三件商品'],
+				isShow:false,
+				shoplist:""
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				mounted(){
+					var list = document.querySelectorAll("li")
+					this.shoplist = list
+					console.log(this.shoplist)
+				},
+				methods:{
+					dealClick(e,id){
+						//console.log(id)
+						for(var i = 0;i<this.shoplist.length;i++){
+							if(id==i){
+								this.shoplist[i].className="active"
+							}else{
+								this.shoplist[i].className=""
+							}
+						}
+						
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

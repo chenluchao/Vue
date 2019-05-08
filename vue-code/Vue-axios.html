@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>{{ msg }}</p>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+		<script src="js/axios/axios.min.js"></script>
+
+		<script>
+			var getUrl = "http://192.168.1.118/teach/gettest/deal.php";
+			var postUrl = "http://192.168.1.118/teach/posttest/deal.php";
+			//data
+			var data = {
+				msg: "hello world"
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				created() {
+					//this.getRequire()
+					this.postRequire()
+				},
+				methods: {
+					getRequire() {
+						var url = getUrl
+						var dict = {
+							username: "admin",
+							password: "123"
+						}
+						axios.get(url, dict).then(res => {
+							console.log("getRequire")
+							console.log(res.data)
+						}).catch(error => {
+							console.log(error)
+						})
+					},
+					postRequire(){//axios.post(url,post参数,option设置).then().catch()
+					/*
+						注意:第二个参数一般不传入对象,
+						因为如果是对象请求的类型会是 application/json;charset=UTF-8
+						服务器有可能无法处理这个请求
+						因此第二个参数一般为字符串
+					*/
+						var url = postUrl
+						
+						axios.post(url, "username=admin&password=123").then(res => {
+							console.log("postRequire")
+							console.log(res.data)
+						}).catch(error => {
+							console.log(error)
+						})
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

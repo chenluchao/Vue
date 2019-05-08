@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+
+		<style>
+			#app {
+				width: 300px;
+				min-height: 300px;
+				background-color: lightgray;
+			}
+
+			.goods-count {
+				width: 100px;
+				min-height: 100px;
+				background-color: lightcoral;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>组件内当前的值 = {{ c }}</p>
+
+			<goods-count @mychange="dealchange"></goods-count>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world",
+				c: 0
+			};
+
+			//组件
+			Vue.component("goods-count", {
+				data() {
+					return {
+						in_count: 1
+					};
+				},
+				template: `<div class="goods-count">
+					{{in_count}} 
+					<button @click="dealAdd">+1</button>
+				</div>`,
+				methods: {
+					dealAdd() {
+						this.in_count++;
+
+						//触发一个自定义事件
+						//$emit是vue提供的函数,功能是触发一个自定义事件
+						//参数1: 事件名, 规则符合普通变量
+						//参数2: 想要传递的参数
+						this.$emit("mychange", this.in_count);
+					}
+				}
+			});
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				methods: {
+					dealchange(c) {
+						console.log("c = " + c);
+
+						//实例中c = 组件内传出来的值
+						this.c = c;
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

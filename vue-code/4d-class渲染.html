@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+
+		<style>
+			.s1 {
+				font-size: 32px;
+			}
+
+			.s2 {
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<!-- html自带 -->
+			<p class="s1 s2">{{ msg }}</p>
+			<!-- 值是字符串, 字符串添加多个样式 -->
+			<p :class=" 's1 s2' ">{{ msg }}</p>
+			<p :class=" c ">{{ msg }}</p>
+			<!-- 值是数据, 应用数组中所有样式 -->
+			<p :class=" ['s1', 's2'] ">aaaaaa</p>
+			<p :class=" a ">aaaaaa</p>
+			<!-- 值是对象, 对象中值的结果为真,应用样式-->
+			<p :class=" { s1: 1 + 1, s2: 1 } ">dddddd</p>
+			<p :class=" d ">dddddd</p>
+			<button @click="dealChange">修改样式</button>
+		</div>
+		<script src="js/vue/vue.js"></script>
+		<script>
+			//data
+			var data = {
+				msg: "hello world",
+				c: "s1 s2",
+				a: ["s1", "s2"],
+				d: { s1: 1 + 1, s2: 1 }
+			};
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				methods: {
+					dealChange() {
+						this.c = "s2";
+						this.a.splice(0, 1);
+						delete this.d["s1"];
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

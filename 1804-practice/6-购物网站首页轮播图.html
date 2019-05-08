@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+		body{
+			margin: 0;
+		}
+		.swiper-item img{
+			width: 100%;
+			height: 100%;
+		}
+		.swiper{
+			position: relative;
+			border: 1px solid black;
+			height:240px;
+		}
+		.swiper-item{
+
+			/* 这些图片, 重叠起来 */
+			position: absolute;
+			left: 0;
+			top: 0;
+			opacity: 0;
+			width: 100%;
+			height: 100%;
+
+			/* 动画效果, 过度效果 */
+			transition: all 1s;
+		}
+
+		/* 只给当前显示的图片加 */
+		.show{
+			opacity: 1;
+		}
+
+		/* 小圆点样式 */
+		.swiper-indicator{
+			/* background-color: lightblue; */
+			position: absolute;
+			height: 30px;
+			width: 100px;
+			left: calc(50% - 50px);
+			bottom: 0;
+
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+		}
+		.swiper-indicator div{
+			width: 10px;
+			height: 10px;
+			background-color: rgba(0,0,0,0.4);
+			border-radius: 50%;
+		}
+		.swiper-indicator .current{
+			background-color: white;
+		}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			
+			<div class="swiper">
+
+				<!-- 显示所有图片 -->
+				<div class="swiper-list">
+						<div class="swiper-item" v-for="(item,index) in list" :class="{show:showIndex==index}">
+								<img :src="item.src" alt="">
+						</div>
+				</div>
+
+				<!-- 小圆点区域 -->
+				<div class="swiper-indicator">
+					<div  v-for="(item,index) in list"  :class="{current:showIndex==index}" @click="dealClick(index)"></div>
+				</div>
+				<!-- 
+					0 == 0   show
+					0 == 1
+					0 == 2
+					0 == 3
+
+				 -->
+			</div>
+
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world",
+
+				// 当前显示的序号
+				showIndex:0,
+
+				//显示的图片列表
+				list:[
+					{
+						src:"img/1.jpg"
+					},{
+						src:"img/2.jpg"
+					},{
+						src:"img/3.jpg"
+					},{
+						src:"img/4.jpg"
+					}
+
+				]
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				created() {
+					setInterval(()=>{
+						//计算下个值
+						var newIndex = this.showIndex+1
+						if(newIndex>=this.list.length){
+							newIndex = 0
+						}
+
+						this.showIndex = newIndex
+
+					},3000)
+				},
+				methods:{
+
+					// 小圆点点击
+					dealClick(index){
+						this.showIndex = index
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

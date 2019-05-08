@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.num{
+				display: inline-block;
+			}
+			.shop{
+				width: 100px;
+				height: 0px;
+				background-color: red;
+				position: fixed;
+				top: 100px;
+				right: 20px;
+				transition: all linear 1s;
+			}
+			.active{
+				height: 300px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<p>计算求和:</p>
+			<input type="text" v-model="num1">
+			<input type="text" v-model="num2">
+			<p>{{parseInt(num1)+parseInt(num2)}}</p>
+
+			<p>评论:</p>
+			<textarea :maxlength="length" cols="30" rows="10" v-model="con"></textarea>
+			<p>剩余输入字数: {{length-con.length}}</p>
+			<p v-if="isShow">{{con}}</p>
+			<button @click="push">发送</button>
+
+
+			<p>商品数目加减</p>
+
+			<button @click="jian">-</button>
+			<p class="num">{{num3}}</p>
+			<button @click="jia">+</button>
+
+
+
+
+			<p>购物车</p>
+			<div :class="{shop:1,active:isBuy}"></div>
+			<button @click="showhs">显示/隐藏</button>
+		</div>
+
+		<script src="../js/vue/vue.js"></script>
+		<script>
+			var data = {
+				num1: "",
+				num2: "",
+				length: 100,
+				con: "",
+				isShow: false,
+				isBuy: false,
+				num3: "1",
+
+			}
+
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				methods: {
+					push() {
+						this.isShow = !this.isShow
+					},
+					jia() {
+						this.num3 = parseInt(this.num3) + 1
+					},
+					jian() {
+						if (this.num3 == 1) {
+							return
+						}
+						this.num3 = parseInt(this.num3) - 1
+					},
+					showhs() {
+						this.isBuy = !this.isBuy
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

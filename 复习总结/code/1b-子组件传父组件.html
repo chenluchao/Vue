@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			#app {
+				width: 300px;
+				height: 500px;
+				background-color: yellow;
+			}
+			.page1,
+			.page2 {
+				width: 200px;
+				height: 200px;
+			}
+			.page1 {
+				background-color: lightblue;
+			}
+			.page2 {
+				background-color: lightcoral;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>{{ msg }}</p>
+			<page1 @mysend="dealChange"></page1>
+			<hr />
+			<page2 @mysend="dealChange"></page2>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world"
+			};
+
+			Vue.component("page1", {
+				template: `<div class="page1">
+					<div>page1 <button @click="dealSend">Send 111</button></div>
+					</div>`,
+				methods: {
+					dealSend() {
+						//
+						console.log("send 111");
+
+						this.$emit("mysend", "111", "AAAAA");
+					}
+				}
+			});
+
+			Vue.component("page2", {
+				template: `<div class="page2">
+					<div>page2 <button @click="dealSend">Send 222</button></div>
+					</div>`,
+				methods: {
+					dealSend() {
+						//
+						console.log("send 222");
+						this.$emit("mysend", "222", "AAA");
+					}
+				}
+			});
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				methods: {
+					dealChange(num, v) {
+						console.log("num=" + num);
+
+						console.log("v=" + v);
+
+						this.msg = num;
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<!-- 数学表达式 -->
+			<p>{{ 10000 }}</p>
+			<p>{{ 10000 + 2000 }}</p>
+			<p>{{ 10000 - 2000 }}</p>
+			<p>{{ 10000 * 2000 }}</p>
+			<p>{{ 10000 / 2000 }}</p>
+			<p>{{ 10010 % 2000 }}</p>
+			<p>{{ 30 * (5 + 7) }}</p>
+
+			<!-- 字符串-->
+			<p>{{ "aaa" }}</p>
+			<p>{{ "aaa" }}</p>
+			<p>{{ "aaa" + "bbbb" }}</p>
+
+			<!-- 能使用的变量有哪些? -->
+			<!-- <p>{{ ga }}</p> -->
+			<!-- <p>{{ sum(10, 20) }}</p> -->
+			<p>{{ Math.abs(-100) }}</p>
+			<p>{{ sum2(10, 20) }}</p>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			var ga = "ggggg";
+			var sum = function(x, y) {
+				return x + y;
+			};
+
+			//data
+			var data = {
+				msg: "hello world"
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				methods: {
+					sum2(x, y) {
+						return x + y;
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

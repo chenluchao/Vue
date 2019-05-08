@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<div>
+				<div>西瓜</div>
+				<div>价格： {{price}}</div>
+				<div>
+					数量: <button @click="dealSub">-</button>
+					<input type="number" v-model="num" min="1">
+					<button @click="dealAdd">+</button>
+				</div>
+				<div>
+					总价 {{num*price}}
+				</div>
+				<button @click="dealBuy">购买</button><button>加入到购物车</button>
+
+			</div>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world",
+				num:1,
+				price:20
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				methods:{
+					dealBuy(){
+						alert("确认: 购买商品总价为"+(this.price*this.num))
+					},
+					dealAdd(){
+						this.num++
+					},
+					dealSub(){
+						var newValue = this.num-1
+						if(newValue>0){
+							this.num--
+						}
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

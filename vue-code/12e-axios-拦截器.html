@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>{{ msg }}</p>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script src="js/axios/axios.min.js"></script>
+
+		<script>
+			var tokenUrl = "http://127.0.0.1/teach/tokentest/deal.php";
+
+			//data
+			var data = {
+				msg: "hello world"
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				created() {
+					// 添加了请求拦截器
+					axios.interceptors.request.use(
+						function(config) {
+							// 请求之前做一些事情
+							console.log("request");
+							console.log(config);
+
+							//请求头添加token, 服务器通过这个token验证请求是否合法
+							config.headers["token"] =
+								"3rqwerewqrwqrwqerqwerwqer";
+
+							return config;
+						},
+						function(error) {
+							// 请求错误的时候做一些事情
+							return Promise.reject(error);
+						}
+					);
+
+					// 添加一个响应拦截器
+					axios.interceptors.response.use(
+						function(response) {
+							// 根据响应数据做一些事情
+							console.log("response==");
+							console.log(response.data);
+
+							//一个简单例子: 如果请求返回的状态码不是200,说明出错了
+							//做一个错误处理:  弹框,告诉用户请求出错了
+							var data = response.data;
+							console.log("code = " + data.code);
+							if (data.code == -100) {
+								alert("版本升级 " + data.msg);
+							}
+
+							return response;
+						},
+						function(error) {
+							// 返回响应错误之后做一些事情
+							return Promise.reject(error);
+						}
+					);
+
+					this.getRequest();
+				},
+				methods: {
+					getRequest() {
+						//
+
+						var url = tokenUrl + "?username=admin&password=123";
+						axios
+							.get(url)
+							.then(res => {
+								//
+								console.log(res.data);
+							})
+							.catch(error => {
+								//
+							});
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

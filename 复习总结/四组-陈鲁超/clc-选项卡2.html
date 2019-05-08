@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style type="text/css">
+			.box{
+				margin-left: 300px;
+				margin-top: 50px;
+				width: 500px;
+				border: 1px solid #ccc;
+				display: flex;
+			}
+			.show{
+				width: 400px;
+				height: 380px;
+				overflow: hidden;
+				position: relative;
+			}
+			.show img{
+				width: 400px;
+				height: 400px;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+			.btn{
+				display: flex;
+				flex-direction: column;
+				width: 100px;
+				background-color: #ccc;
+			}
+			.btn div{
+				border: 1px solid #f90;
+				width: 94px;
+				height: 90px;
+				padding-left: 10px;
+				box-sizing: border-box;
+				line-height: 90px;
+				margin-left: 2px;
+			}
+			.btn div:nth-of-type(n+2){
+				margin-top: 7px;
+			}
+			.active{
+				color: #fff;
+				background-color: #03ccbb;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="clc">
+			<div class="box">
+				<div class="btn">
+					<div @click="showIndex=0" :class="{active:this.showIndex==0}">生活用品</div>
+					<div @click="showIndex=1" :class="{active:this.showIndex==1}">服饰</div>
+					<div @click="showIndex=2" :class="{active:this.showIndex==2}">小礼品</div>
+					<div @click="showIndex=3" :class="{active:this.showIndex==3}">电脑配件</div>
+				</div>
+				<div class="show">
+					<div @click="showIndex=0" v-show="showIndex==0">
+						<div>000商品1</div>
+						<div>000商品2</div>
+					</div>
+					<div @click="showIndex=1" v-show="showIndex==1">
+						<div>111商品1</div>
+						<div>111商品2</div>
+					</div>
+					<div @click="showIndex=2" v-show="showIndex==2">
+						<div>222商品1</div>
+						<div>222商品2</div>
+					</div>
+					<div @click="showIndex=3" v-show="showIndex==3">
+						<div>333商品1</div>
+						<div>333商品2</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				showIndex:0,
+			};
+
+			//vue实例
+			var clc = new Vue({
+				el: "#clc",
+				data: data
+			});
+		</script>
+	</body>
+</html>

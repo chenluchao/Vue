@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			.swiper-box {
+				width: 737px;
+				height: 305px;
+				overflow: hidden;
+				position: relative;
+				border: 1px solid #ccc;
+			}
+
+			.swiper-box img {
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+			.fade-enter-active,
+			.fade-leave-active {
+				transition: opacity 1s;
+			}
+			
+			.fade-enter,
+			.fade-leave-to
+				{
+				opacity: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<div class="swiper-box">
+				<transition name="fade"  v-for="(item,index) in list" :key="index">
+					<img v-show="index==showId" :src="item" />
+				</transition>
+			</div>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				list: ['img/img/1.jpg', 'img/img/2.jpg', 'img/img/3.jpg'],
+				showId: 0
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				mounted() {
+					var self = this
+					setInterval(function() {
+						if (self.showId >= self.list.length - 1) {
+							self.showId = 0
+						}
+						self.showId++
+					}, 1000)
+				}
+			});
+			
+		</script>
+	</body>
+</html>

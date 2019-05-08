@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+
+		<style>
+			#app {
+				width: 300px;
+				height: 500px;
+				background-color: yellow;
+			}
+
+			.page1,
+			.page2 {
+				width: 200px;
+				height: 200px;
+			}
+
+			.page1 {
+				background-color: lightblue;
+			}
+
+			.page2 {
+				background-color: lightcoral;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>{{ msg }}</p>
+			<page1></page1>
+			<hr />
+			<page2></page2>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world"
+			};
+
+			//Step1:
+			var eventBus = new Vue();
+
+			Vue.component("page1", {
+				template: `<div class="page1">page1
+					<button @click="dealSend">Send AAA</button>
+				</div>`,
+				methods: {
+					dealSend() {
+						//Step2: 发送数据
+						eventBus.$emit("mysend", "AAA");
+					}
+				}
+			});
+
+			Vue.component("page2", {
+				template: `<div class="page2">page2 {{str}}</div>`,
+				data() {
+					return {
+						str: ""
+					};
+				},
+				created() {
+					//Step3: 接收数据
+					eventBus.$on("mysend", str => {
+						//
+						console.log("str = " + str);
+						this.str = str;
+					});
+				}
+			});
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data
+			});
+		</script>
+	</body>
+</html>

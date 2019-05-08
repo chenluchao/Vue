@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<hello></hello>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world"
+			};
+
+			Vue.component("hello", {
+				template: `<div>hello {{num}} <button @click="num++">CCC</button></div>`,
+				data() {
+					return {
+						num: 10
+					};
+				},
+				watch: {
+					//这个地方num要和变量同名,才可以触发
+					// num() {
+					// 	//
+					// 	console.log("hehe");
+					// }
+					num: function(newValue, oldValue) {
+						//
+						console.log("hehe");
+						console.log(oldValue);
+						console.log(newValue);
+					}
+				}
+			});
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data
+			});
+		</script>
+	</body>
+</html>

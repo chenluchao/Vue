@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+	</head>
+	<body>
+		<!-- Step1: 写一个vue基本结构 -->
+		<div id="app">
+			<p>I am vue app</p>
+			<p>{{ msg }}</p>
+			<button @click="dealChange">数据变化</button>
+		</div>
+
+		<!-- Step2: 导入vue脚本 -->
+		<script src="js/vue/vue.js"></script>
+
+		<!-- Step3: 创建vue实例, 进行初始化 -->
+		<script>
+			//定义了使用的数据
+			var data = {
+				msg: "hello world"
+			};
+
+			//创建了一个实例, 设置两个属性
+			//el表示vue控制的div的选择器
+			//data表示vue可以使用的初始化数据
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				methods: {
+					dealChange() {
+						console.log("change");
+
+						this.msg = "change";
+					}
+				}
+			});
+
+			//vue实例中直接通过this.msg操作数据, 实例之外通过 app.msg修改
+			app.msg = "hehe";
+		</script>
+	</body>
+</html>

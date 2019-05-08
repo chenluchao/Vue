@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>豆豆</p>
+			<p>价格：{{one}}元</p>
+			<p>数量：<button @click="dealjian">-</button><input type="text" v-model="num"><button @click="num++">+</button></p>
+			<p>总价：{{sum}}</p>
+			<p><button @click="buy">购买</button></p>
+			<show v-if="isShow" :sum="sum"></show>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				num: 1,
+				one:200,
+				isShow:false
+			};
+			Vue.component("show",{
+				props:["sum"],
+				template:`<div>
+				购买总价为: {{sum}}
+				</div>`
+			})
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				methods:{
+					dealjian(){
+						if(this.num<=1){
+							return;
+						}
+						this.num--
+					},
+					buy(){
+						this.isShow = true
+					}
+				},
+				computed:{
+					sum(){
+						return this.num*this.one
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

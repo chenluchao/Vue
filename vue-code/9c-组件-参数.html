@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			body {
+				margin: 0;
+			}
+			.navbar {
+				width: 100%;
+				height: 44px;
+				border-bottom: 1px solid #888;
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+				line-height: 44px;
+				text-align: center;
+			}
+			.navbar .title {
+				flex-grow: 1;
+			}
+			.navbar .left,
+			.navbar .right {
+				flex-basis: 60px;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<navbar left="L" nav-title="首页"></navbar>
+			<navbar left="LL" nav-title=="列表"></navbar>
+			<navbar left="LLL" nav-title=="详情"></navbar>
+
+			<p>{{ msg }}</p>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world"
+			};
+
+			//参数名
+			//props可以添加多个属性, 每个属性名规则必须是一个变量名, 因为要在{{}}使用
+			//一个变量全小写, 组价使用直接写, 组件外部传参直接写
+			//特殊:
+			//	如果一个变量是驼峰式, 组件内部直接使用, 组件传参时候要用小写加-形式
+			Vue.component("navbar", {
+				props: ["left", "navTitle", "right"],
+				template: `<div class="navbar">
+					<div class="left">{{left}}</div>
+					<div class="title">{{navTitle}}</div>
+					<div class="right">{{right}}</div>
+					</div>
+				`
+			});
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data
+			});
+		</script>
+	</body>
+</html>

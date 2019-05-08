@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+		<style>
+			.show{
+				width: 100px;
+				height: 100px;
+				background-color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			
+			<p>鼠标事件</p>
+			<p>{{ msg1 }}</p>
+			<p><button @click="dealClick">鼠标点击</button></p>
+			<p><button @dblclick="dealDblClick">鼠标双击</button></p>
+			<p>{{msg2}}</p>
+			<div class="show" @mouseenter="dealMouseInter" @mousemove="dealMouseMove($event)" @mouseleave="dealMouseLeave"></div>
+			
+			
+			
+			
+			<hr />
+			
+			<p>键盘事件</p>
+			<p>{{info}}</p>
+			<input type="text" @keydown="dealDown($event)" @keypress="dealPress" @keyup="dealUp" @focus="dealfocus" @blur="dealblur" @change="dealChange">
+			
+			
+			
+			
+			<hr />
+			<p>click事件直接操作数据</p>
+			<p><button @click="isShow=!isShow">显示/隐藏</button></p>
+			<p v-if="isShow">click事件除了可以添加事件还可以通过放表达式来直接操作数据</p>
+			
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg1: "----",
+				msg2:"---",
+				info:"---",
+				isShow:true
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data,
+				methods:{
+					dealClick(){
+						this.msg1="鼠标点击"
+					},
+					dealDblClick(){
+						this.msg1="鼠标双击"
+					},
+					dealMouseInter(){
+						this.msg2="鼠标移入"
+					},
+					dealMouseMove(e){
+						console.log(e)
+						this.msg2 = `move ${e.offsetX} ${e.offsetY}`//注意此处不是单引号是Tab按钮上面的按键
+					},
+					dealMouseLeave(){
+						this.msg2 = "鼠标离开"
+					},
+					dealDown(e){
+						console.log(e)
+						this.info = "down"
+					},
+					dealPress(){
+						this.info = "press"
+					},
+					dealUp(){
+						this.info = "up"
+					},
+					dealfocus(){
+						this.info = "focus"
+					},
+					dealChange(){
+						this.info = "change"
+					},
+					dealblur(){
+						this.info = "blur"
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

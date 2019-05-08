@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<button @click="isShow = !isShow">S/H</button>
+
+			<hello v-show="isShow"></hello>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			//data
+			var data = {
+				msg: "hello world",
+				isShow: true
+			};
+
+			Vue.component("hello", {
+				template: `<div>hello</div>`,
+				created() {
+					console.log("==created==");
+				},
+				mounted() {
+					console.log("==mounted==");
+				},
+
+				//destroy
+				beforeDestroy() {
+					console.log("==beforeDestroy==");
+					console.log(this.$data);
+					console.log(this.$el);
+				},
+				destroyed() {
+					console.log("==destroyed==");
+					console.log(this.$data);
+					console.log(this.$el);
+				}
+			});
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data
+			});
+		</script>
+	</body>
+</html>

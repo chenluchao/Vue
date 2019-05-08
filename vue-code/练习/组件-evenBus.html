@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			#app {
+				width: 300px;
+				min-height: 300px;
+				background-color: lightgray;
+			}
+
+			.goods-count {
+				width: 100px;
+				min-height: 100px;
+				background-color: lightcoral;
+			}
+			.total-price {
+				width: 100px;
+				min-height: 100px;
+				background-color: lightblue;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<p>{{msg}}</p>
+			<first></first>
+			<second></second>
+		</div>
+		<script src="../js/vue/vue.js"></script>
+		<script>
+			var data = {
+				msg:"evenBus"
+			};
+			
+			var eventBus = new Vue();
+			
+			Vue.component("first",{
+				
+				template:`<div class="totla-price">总价 = {{count * price}}</div>`,
+				data(){
+					return{
+						count:0,
+						price:10
+					}
+				},
+				created(){
+					eventBus.$on("mychange",c=>{
+						this.count = c;
+					})
+				}
+			})
+			
+			Vue.component("second",{
+				template: `<div class="goods-count">
+					{{count}}
+					<button @click="dealAdd">+1</button>
+				</div>`,
+				data(){
+					return{
+						count:2
+					}
+				},
+				methods:{
+					dealAdd(){
+						this.count++
+						eventBus.$emit("mychange",this.count)
+					}
+				},
+				created(){
+					eventBus.$emit("mychange",this.count)
+				}
+			})
+			
+			var app = new Vue({
+				el:"#app",
+				data:data
+			})
+		</script>
+	</body>
+</html>

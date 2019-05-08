@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vue demo</title>
+	</head>
+	<body>
+		<!-- 显示视图 -->
+		<div id="app">
+			<p>{{ msg }}</p>
+			<hehe></hehe>
+		</div>
+
+		<script src="js/vue/vue.js"></script>
+
+		<script>
+			
+			Vue.component("hehe",{
+				template:`<div>
+				hello {{num}} <button @click="num++"> + </button>
+				</div>`,
+				data(){
+					return{num:10}
+				},
+				watch:{
+					num(newValue,oldValue){
+						//console.log(this.num)
+						console.log(newValue)
+						console.log(oldValue)
+					}
+				}
+			})
+			//data
+			var data = {
+				msg: "hello world"
+			};
+
+			//vue实例
+			var app = new Vue({
+				el: "#app",
+				data: data
+			});
+		</script>
+	</body>
+</html>
